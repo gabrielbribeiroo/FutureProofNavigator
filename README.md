@@ -38,25 +38,6 @@ futureproof-navigator/
 *   **JavaScript:** Interatividade do quiz e do formulário.
 *   **Google Fonts (Poppins):** Tipografia moderna.
 
-## Deploy Permanente (GitHub Pages)
-
-Para hospedar este site permanentemente usando o GitHub Pages, siga os passos abaixo:
-
-1.  **Crie um Novo Repositório no GitHub:**
-    *   Vá para [GitHub](https://github.com) e crie um novo repositório (ex: `futureproof-navigator`).
-    *   **Não** inicialize com README, .gitignore ou licença.
-2.  **Faça o Upload dos Arquivos:**
-    *   Descompacte o arquivo `futureproof-navigator.zip` (fornecido anteriormente) que contém os arquivos `index.html`, `css/style.css` e `js/script.js`.
-    *   Faça o upload de todo o conteúdo da pasta `futureproof-navigator` descompactada para a **raiz** do seu novo repositório GitHub.
-3.  **Configure o GitHub Pages:**
-    *   No seu repositório, vá em `Settings` (Configurações).
-    *   No menu lateral esquerdo, clique em `Pages`.
-    *   Em `Source` (Fonte), selecione `Deploy from a branch` (Implantar de um branch).
-    *   Escolha o branch `main` (ou `master`, dependendo do nome padrão do seu branch) e a pasta `/(root)` (raiz).
-    *   Clique em `Save` (Salvar).
-4.  **Aguarde a Publicação:**
-    *   Após alguns minutos, seu site estará disponível no formato `https://<seu-nome-de-usuario>.github.io/<nome-do-repositorio>/` (ex: `https://gabrielribeiro.github.io/futureproof-navigator/`).
-
 ## Contribuição
 
 Sinta-se à vontade para clonar este repositório, explorar o código e adaptá-lo às suas necessidades. Se encontrar algum bug ou tiver sugestões de melhoria, por favor, abra uma issue ou envie um pull request.
