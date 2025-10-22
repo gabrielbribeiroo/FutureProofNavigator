@@ -72,7 +72,6 @@
         </div>
     </section>
 
-    <!-- Resto das seções permanecem iguais -->
     <section id="problem" class="section-dark">
         <div class="container">
             <h2>O Futuro do Trabalho Mudou. Você Está Pronto?</h2>
@@ -145,7 +144,7 @@
         let responses = {};
         let selectedArea = "";
         
-        // Questionário por área - SEM respostas certas
+        // Questionário por área - Diagnóstico, sem certo ou errado
         const quizData = {
             tecnologia: [
                 { q: "Qual ferramenta de IA você mais usa?", 
@@ -209,12 +208,12 @@
             ]
         };
 
-        // Perfis gerados pelas respostas
+        // Perfis baseados no perfil profissional
         const profileTypes = {
-            "pioneer": { title: "🚀 Pioneiro IA", desc: "Você está à frente! Foco em liderança e inovação.", color: "#28a745" },
-            "adaptor": { title: "⚡ Adaptador Rápido", desc: "Excelente base. Foque em escala e automação.", color: "#007bff" },
-            "builder": { title: "🏗️ Construtor", desc: "Base sólida. Invista em habilidades técnicas.", color: "#ffc107" },
-            "starter": { title: "🌱 Iniciante Estratégico", desc: "Perfeito ponto de partida. Plano acelerado para você.", color: "#fd7e14" }
+            "pioneer": { key: "pioneer", title: "🚀 Pioneiro IA", desc: "Você já usa IA e lidera mudanças. Foco em inovação.", color: "#28a745" },
+            "adaptor": { key: "adaptor", title: "⚡ Adaptador Rápido", desc: "Boa base técnica. Invista em automação.", color: "#007bff" },
+            "builder": { key: "builder", title: "🏗️ Construtor", desc: "Forte em prática. Adicione habilidades digitais.", color: "#ffc107" },
+            "starter": { key: "starter", title: "🌱 Iniciante Estratégico", desc: "Ponto de partida ideal. Comece com o básico.", color: "#fd7e14" }
         };
 
         function startQuiz() {
@@ -238,7 +237,7 @@
             const optionsContainer = document.getElementById("options-container");
             optionsContainer.innerHTML = currentQuiz.options.map((opt, i) => 
                 `<label class="quiz-option">
-                    <input type="radio" name="q${currentQuestion}" value="${i}" onchange="selectAnswer(${currentQuestion}, ${i})">
+                    <input type="radio" name="q${currentQuestion}" value="${opt}" onchange="selectAnswer(${currentQuestion}, '${opt}')">
                     ${opt}
                 </label>`
             ).join('');
@@ -247,12 +246,13 @@
             document.getElementById("submit-quiz").style.display = "none";
         }
 
-        function selectAnswer(questionIndex, optionIndex) {
-            responses[`q${questionIndex}`] = optionIndex;
+        function selectAnswer(questionIndex, option) {
+            responses[`q${questionIndex}`] = option;
             document.getElementById("next-btn").style.display = "block";
         }
 
         function nextQuestion() {
+            if (!responses[`q${currentQuestion}`]) return alert("Selecione uma opção!");
             if (currentQuestion < 4) {
                 currentQuestion++;
                 loadQuestion();
@@ -260,7 +260,9 @@
         }
 
         function submitQuiz() {
-            // Gera perfil baseado nas respostas
+            if (!responses[`q${currentQuestion}`]) return alert("Selecione uma opção antes de finalizar!");
+            
+            // Gera perfil com base nas respostas
             const profile = generateProfile();
             
             document.getElementById("quiz-container").style.display = "none";
@@ -270,21 +272,30 @@
             document.getElementById("profile-description").textContent = profile.desc;
             document.getElementById("profile-type").style.color = profile.color;
             
-            // Preenche campos ocultos
+            // Preenche campos ocultos para o Mailchimp
             document.getElementById("area-hidden").value = selectedArea;
             document.getElementById("profile-type-hidden").value = profile.key;
             document.getElementById("responses-hidden").value = JSON.stringify(responses);
         }
 
         function generateProfile() {
-            // Lógica simples baseada nas respostas
-            const techLevel = responses.q1 || 0;
-            const learningTime = responses.q2 || 0;
-            const totalScore = Object.values(responses).reduce((a, b) => a + b, 0);
-            
-            if (totalScore >= 12) return profileTypes.pioneer;
-            if (totalScore >= 8) return profileTypes.adaptor;
-            if (totalScore >= 4) return profileTypes.builder;
+            // Lógica de perfil baseada em respostas (sem acertos)
+            const techTool = responses.q0 || "Nenhuma"; // Ferramenta usada
+            const skillLevel = responses.q1 || "Iniciante"; // Nível técnico
+            const learningTime = responses.q2 || "0-2h"; // Tempo de aprendizado
+            const focusArea = responses.q3 || "Nenhum"; // Prioridade/Interesse
+            const confidence = responses.q4 || "Baixa"; // Confiança em IA
+
+            // Pontuação simples para determinar perfil
+            let profileScore = 0;
+            if (techTool !== "Nenhuma") profileScore += 2;
+            if (skillLevel === "Avançado" || skillLevel === "Expert") profileScore += 2;
+            if (learningTime === "6-10h" || learningTime === "+10h") profileScore += 2;
+            if (confidence === "Muito alta" || confidence === "Alta") profileScore += 2;
+
+            if (profileScore >= 6) return profileTypes.pioneer;
+            if (profileScore >= 4) return profileTypes.adaptor;
+            if (profileScore >= 2) return profileTypes.builder;
             return profileTypes.starter;
         }
     </script>
