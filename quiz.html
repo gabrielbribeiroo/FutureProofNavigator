@@ -330,6 +330,12 @@
         results.style.display = "block";
         results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+        // Redireciona para a seção de contato no site público após breve pausa
+        setTimeout(function(){
+            const contactUrl = `https://gabrielbribeiroo.github.io/FutureProofNavigator/#contact${queryString}`;
+            window.location.href = contactUrl;
+        }, 1200);
+
         (async function() {
             if (supabaseClient) {
                 try {
