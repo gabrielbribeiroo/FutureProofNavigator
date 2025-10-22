@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FutureProof Navigator - Descubra Seu Perfil IA-Proof</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css"> <!-- Verifique se está na pasta css/ -->
 </head>
 <body>
     <header>
@@ -121,7 +120,6 @@
                     <input type="text" name="NAME" placeholder="Seu Nome" required>
                     <input type="email" name="EMAIL" placeholder="Seu Melhor E-mail" required>
                     
-                    <!-- Campos ocultos para personalização -->
                     <input type="hidden" name="AREA" id="area-hidden">
                     <input type="hidden" name="PROFILE_TYPE" id="profile-type-hidden">
                     <input type="hidden" name="RESPONSES" id="responses-hidden">
@@ -144,7 +142,6 @@
         let responses = {};
         let selectedArea = "";
         
-        // Questionário por área - Diagnóstico, sem certo ou errado
         const quizData = {
             tecnologia: [
                 { q: "Qual ferramenta de IA você mais usa?", 
@@ -208,7 +205,6 @@
             ]
         };
 
-        // Perfis baseados no perfil profissional
         const profileTypes = {
             "pioneer": { key: "pioneer", title: "🚀 Pioneiro IA", desc: "Você já usa IA e lidera mudanças. Foco em inovação.", color: "#28a745" },
             "adaptor": { key: "adaptor", title: "⚡ Adaptador Rápido", desc: "Boa base técnica. Invista em automação.", color: "#007bff" },
@@ -262,7 +258,6 @@
         function submitQuiz() {
             if (!responses[`q${currentQuestion}`]) return alert("Selecione uma opção antes de finalizar!");
             
-            // Gera perfil com base nas respostas
             const profile = generateProfile();
             
             document.getElementById("quiz-container").style.display = "none";
@@ -272,26 +267,23 @@
             document.getElementById("profile-description").textContent = profile.desc;
             document.getElementById("profile-type").style.color = profile.color;
             
-            // Preenche campos ocultos para o Mailchimp
             document.getElementById("area-hidden").value = selectedArea;
             document.getElementById("profile-type-hidden").value = profile.key;
             document.getElementById("responses-hidden").value = JSON.stringify(responses);
         }
 
         function generateProfile() {
-            // Lógica de perfil baseada em respostas (sem acertos)
-            const techTool = responses.q0 || "Nenhuma"; // Ferramenta usada
-            const skillLevel = responses.q1 || "Iniciante"; // Nível técnico
-            const learningTime = responses.q2 || "0-2h"; // Tempo de aprendizado
-            const focusArea = responses.q3 || "Nenhum"; // Prioridade/Interesse
-            const confidence = responses.q4 || "Baixa"; // Confiança em IA
+            const techTool = responses.q0 || "Nenhuma";
+            const skillLevel = responses.q1 || "Iniciante";
+            const learningTime = responses.q2 || "0-2h";
+            const focusArea = responses.q3 || "Nenhum";
+            const confidence = responses.q4 || "Baixa";
 
-            // Pontuação simples para determinar perfil
             let profileScore = 0;
             if (techTool !== "Nenhuma") profileScore += 2;
-            if (skillLevel === "Avançado" || skillLevel === "Expert") profileScore += 2;
-            if (learningTime === "6-10h" || learningTime === "+10h") profileScore += 2;
-            if (confidence === "Muito alta" || confidence === "Alta") profileScore += 2;
+            if (["Avançado", "Expert"].includes(skillLevel)) profileScore += 2;
+            if (["6-10h", "+10h"].includes(learningTime)) profileScore += 2;
+            if (["Muito alta", "Alta"].includes(confidence)) profileScore += 2;
 
             if (profileScore >= 6) return profileTypes.pioneer;
             if (profileScore >= 4) return profileTypes.adaptor;
