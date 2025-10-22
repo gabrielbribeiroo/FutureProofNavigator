@@ -4,7 +4,8 @@ body {
     padding: 0;
     box-sizing: border-box;
     background-color: #f4f7f6;
-    color: #333;
+    color: #2c3e50;
+    line-height: 1.6;
 }
 
 .container {
@@ -15,33 +16,32 @@ body {
 
 /* Header */
 header {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
     width: 100%;
     top: 0;
-    left: 0;
     z-index: 1000;
+    padding: 15px 0;
 }
 
 header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
 }
 
 .logo {
     font-size: 1.8em;
     font-weight: 700;
-    color: #007bff;
+    color: #1abc9c;
 }
 
 nav ul {
     list-style: none;
+    display: flex;
     margin: 0;
     padding: 0;
-    display: flex;
 }
 
 nav ul li {
@@ -50,139 +50,125 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #555;
+    color: #34495e;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 nav ul li a:hover {
-    color: #007bff;
+    color: #1abc9c;
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
-    color: #fff;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+    color: #ffffff;
     text-align: center;
-    padding: 150px 20px 100px;
+    padding: 150px 20px;
+    min-height: 600px;
+    margin-top: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 600px;
-    margin-top: 60px;
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 900px;
 }
 
 .hero h1 {
     font-size: 3.5em;
+    font-weight: 700;
     margin-bottom: 20px;
-    line-height: 1.2;
 }
 
-.hero p {
-    font-size: 1.3em;
+.subtitle {
+    font-size: 1.2em;
     margin-bottom: 40px;
-}
-
-#initial-form, #quiz-container {
-    margin-top: 20px;
-}
-
-#area-selection {
-    padding: 10px;
-    font-size: 1em;
-    border-radius: 5px;
-    margin-right: 10px;
-    width: 100%;
-    max-width: 300px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .btn-primary, .btn-secondary {
-    background-color: #007bff;
+    background-color: #1abc9c;
     color: #fff;
-    padding: 15px 30px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+    padding: 12px 30px;
     border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
     cursor: pointer;
     font-size: 1em;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #16a085;
 }
 
 .btn-secondary {
-    background-color: #28a745;
+    background-color: #3498db;
 }
 
 .btn-secondary:hover {
-    background-color: #218838;
+    background-color: #2980b9;
 }
 
 /* Sections */
 .section-dark {
-    background-color: #343a40;
-    color: #f8f9fa;
+    background-color: #2c3e50;
+    color: #ecf0f1;
     padding: 80px 20px;
     text-align: center;
 }
 
 .section-light {
-    background-color: #fff;
-    color: #333;
+    background-color: #ffffff;
+    color: #2c3e50;
     padding: 80px 20px;
     text-align: center;
 }
 
 h2 {
     font-size: 2.5em;
-    margin-bottom: 40px;
-    color: inherit;
+    font-weight: 700;
+    margin-bottom: 30px;
 }
 
-.subtitle {
-    font-size: 1.2em;
-    margin-bottom: 60px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-}
-
-/* Problem Grid */
+/* Problem and Solution Grids */
 .problem-grid, .solution-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .problem-item, .solution-item {
-    background-color: rgba(255,255,255,0.1);
-    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 25px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.problem-item:hover, .solution-item:hover {
+    transform: translateY(-5px);
 }
 
 .problem-item h3, .solution-item h3 {
     font-size: 1.5em;
+    color: #1abc9c;
     margin-bottom: 15px;
-    color: #007bff;
 }
 
 .problem-item p, .solution-item p {
     font-size: 1.1em;
-    line-height: 1.6;
 }
 
 /* Contact Form */
-#mc_embed_signup {
+.contact-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -191,29 +177,68 @@ h2 {
     margin: 40px auto 0;
 }
 
-#mc_embed_signup input[type="text"],
-#mc_embed_signup input[type="email"] {
+.contact-form input[type="text"],
+.contact-form input[type="email"] {
     width: 100%;
-    padding: 15px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 1em;
+    background-color: #fff;
+}
+
+.contact-form button {
+    width: 100%;
+}
+
+.form-message {
+    margin-top: 15px;
     font-size: 1em;
 }
 
-#mc_embed_signup button {
-    width: 100%;
-}
-
-/* Footer */
-footer {
-    background-color: #222;
-    color: #aaa;
-    padding: 30px 20px;
+/* Share Section */
+#share {
+    padding: 40px 20px;
+    background-color: #ecf0f1;
     text-align: center;
-    font-size: 0.9em;
 }
 
-/* Quiz Styles */
+/* Quiz Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #34495e;
+}
+
+.quiz-container {
+    text-align: left;
+}
+
 .quiz-progress {
     margin-bottom: 20px;
 }
@@ -221,35 +246,43 @@ footer {
 .progress-bar {
     width: 100%;
     height: 8px;
-    background: rgba(255,255,255,0.2);
+    background: #ddd;
     border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 10px;
 }
 
 #progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #007bff, #28a745);
+    background: #1abc9c;
     transition: width 0.3s ease;
 }
 
 #progress-text {
-    color: #fff;
+    color: #2c3e50;
     font-weight: 600;
+    display: block;
+    margin-top: 5px;
+}
+
+#question-container h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #2c3e50;
 }
 
 .quiz-option {
-    display: block;
-    padding: 12px;
-    margin: 8px 0;
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin: 10px 0;
+    background: #f9f9f9;
+    border-radius: 5px;
     cursor: pointer;
     transition: background 0.2s;
 }
 
 .quiz-option:hover {
-    background: rgba(255,255,255,0.2);
+    background: #ecf0f1;
 }
 
 .quiz-option input[type="radio"] {
@@ -257,18 +290,24 @@ footer {
     transform: scale(1.2);
 }
 
-#profile-result h3 {
-    font-size: 2em;
-    margin-bottom: 15px;
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.quiz-navigation button {
+    padding: 10px 20px;
+    width: 48%;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .hero h1 {
-        font-size: 2.5em;
+        font-size: 2.2em;
     }
 
-    .hero p {
+    .subtitle {
         font-size: 1em;
     }
 
@@ -279,18 +318,32 @@ footer {
     nav ul {
         flex-direction: column;
         align-items: center;
-        margin-top: 20px;
+        margin-top: 15px;
     }
 
     nav ul li {
         margin: 10px 0;
     }
 
-    header .container {
+    .problem-grid, .solution-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        width: 85%;
+    }
+
+    .quiz-navigation {
         flex-direction: column;
     }
 
-    .problem-grid, .solution-grid {
-        grid-template-columns: 1fr;
+    .quiz-navigation button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .quiz-navigation button:last-child {
+        margin-bottom: 0;
     }
 }
