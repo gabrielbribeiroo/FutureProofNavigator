@@ -374,3 +374,63 @@ h2 {
         transform: scale(1.1);
     }
 }
+
+/* ---------- MÚLTIPLA ESCOLHA ---------- */
+.quiz-choice {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 1.05rem;
+    color: #2c3e50;
+    position: relative;
+}
+
+.quiz-choice:hover {
+    border-color: #1abc9c;
+    background: #f5fffa;
+}
+
+.quiz-choice.selected {
+    border-color: #1abc9c;
+    background: #e8f9f5;
+    font-weight: 600;
+}
+
+/* radio button customizado */
+.quiz-choice input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+.checkmark {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #1abc9c;
+    border-radius: 50%;
+    margin-right: 14px;
+    position: relative;
+    flex-shrink: 0;
+}
+.quiz-choice.selected .checkmark::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 10px; height: 10px;
+    background: #1abc9c;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* desabilita botão */
+.btn-disabled {
+    background-color: #95a5a6 !important;
+    cursor: not-allowed;
+    opacity: .65;
+}
+.btn-disabled:hover { background-color: #95a5a6 !important; }
