@@ -215,6 +215,8 @@
             nextBtn.style.display = "inline-block";
             submitBtn.style.display = "none";
         }
+        // Garante que o botão Avançar chame nextQuestion durante as perguntas
+        nextBtn.onclick = nextQuestion;
         // Oculta mensagem de fechamento e resultados ao navegar
         document.getElementById("closing-message").style.display = "none";
         document.getElementById("results-container").style.display = "none";
