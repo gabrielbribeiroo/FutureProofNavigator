@@ -98,16 +98,6 @@
                 { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
                 { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
             ],
-            outra: [
-                { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT", "Análise de dados", "Automação", "Não utilizo"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Incerteza geral", "Perda de controle", "Falta de recursos", "Outro motivo"] },
-                { q: "Qual é o seu nível técnico atual?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual é o seu maior desafio atual no trabalho?", options: ["Falta de tempo", "Custo", "Complexidade", "Falta de motivação"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ],
             saude: [
                 { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["Sistemas de diagnóstico", "Análise de dados", "Não utilizo", "Outra ferramenta"] },
                 { q: "Qual é o seu maior receio em relação à IA?", options: ["Erro médico", "Perda de humanização", "Questões regulatórias", "Outro motivo"] },
@@ -127,6 +117,16 @@
                 { q: "Qual é a sua área de foco principal?", options: ["Ensino", "Gestão", "Pesquisa", "Treinamento"] },
                 { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
                 { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+            ],
+            outra: [
+                { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT", "Análise de dados", "Automação", "Não utilizo"] },
+                { q: "Qual é o seu maior receio em relação à IA?", options: ["Incerteza geral", "Perda de controle", "Falta de recursos", "Outro motivo"] },
+                { q: "Qual é o seu nível técnico atual?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
+                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+                { q: "Qual é o seu maior desafio atual no trabalho?", options: ["Falta de tempo", "Custo", "Complexidade", "Falta de motivação"] },
+                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
             ]
         };
 
@@ -140,9 +140,9 @@
                     <option value="publicidade">Publicidade/Marketing</option>
                     <option value="financas">Finanças</option>
                     <option value="construcao">Construção Civil</option>
-                    <option value="outra">Outra</option>
                     <option value="saude">Saúde</option>
                     <option value="educacao">Educação</option>
+                    <option value="outra">Outra</option>
                 `;
                 areaSelect.onchange = function() { selectedArea = this.value; loadQuestion(); };
                 document.getElementById("question-container").innerHTML = "<h3>Selecione sua área de atuação</h3>";
@@ -165,8 +165,15 @@
                 </label>`
             ).join('');
 
+            // Correção da navegação
             document.getElementById("prev-btn").classList.toggle("btn-disabled", currentQuestion === 0);
+            if (currentQuestion > 0) {
+                document.getElementById("prev-btn").classList.remove("btn-disabled");
+            }
             document.getElementById("next-btn").classList.toggle("btn-disabled", currentQuestion === 7);
+            if (currentQuestion < 7) {
+                document.getElementById("next-btn").classList.remove("btn-disabled");
+            }
             document.getElementById("submit-quiz").style.display = currentQuestion === 7 ? "inline-block" : "none";
             if (currentQuestion === 7) {
                 document.getElementById("next-btn").style.display = "none";
@@ -191,6 +198,8 @@
             if (responses[`q${currentQuestion}`] && !document.getElementById("next-btn").classList.contains("btn-disabled")) {
                 currentQuestion++;
                 loadQuestion();
+            } else if (!responses[`q${currentQuestion}`]) {
+                alert("Selecione uma opção antes de avançar!");
             }
         }
 
