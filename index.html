@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureProof Navigator - Capacitando Você para o Futuro do Trabalho</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">FutureProof Navigator</div>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#problem">O Problema</a></li>
+                    <li><a href="#solution">A Solução</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Seu Guia Essencial para o Futuro do Trabalho</h1>
+                <p>Prepare-se para as transformações do mercado impulsionadas pela IA. Mantenha-se relevante, adapte-se e prospere.</p>
+                <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });">Comece Sua Jornada</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="problem" class="section-dark">
+        <div class="container">
+            <h2>O Futuro do Trabalho Mudou. Você Está Pronto?</h2>
+            <div class="problem-grid">
+                <div class="problem-item">
+                    <h3>A Faculdade Não Garante Mais Tudo</h3>
+                    <p>Diplomas são importantes, mas não são mais a única garantia de sucesso. O mercado exige habilidades dinâmicas e aprendizado contínuo.</p>
+                </div>
+                <div class="problem-item">
+                    <h3>IA Substituindo Profissionais</h3>
+                    <p>Pessoas mais experientes podem ser substituídas em até 5 anos por IAs em tarefas rotineiras. A adaptação é chave para a longevidade da carreira.</p>
+                </div>
+                <div class="problem-item">
+                    <h3>Setores em Transformação</h3>
+                    <p>Áreas como publicidade e finanças são mais afetadas que construção civil. Entenda onde sua profissão se encaixa e como se preparar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution" class="section-light">
+        <div class="container">
+            <h2>Nossa Solução: Relevância e Adaptabilidade Contínuas</h2>
+            <p class="subtitle">O FutureProof Navigator é sua bússola em um mercado em evolução. Oferecemos:
+            <div class="solution-grid">
+                <div class="solution-item">
+                    <h3>Orientação Personalizada</h3>
+                    <p>Análise do seu perfil e impacto da IA na sua área, com um plano de desenvolvimento sob medida.</p>
+                </div>
+                <div class="solution-item">
+                    <h3>Trilhas de Requalificação</h3>
+                    <p>Recomendações de habilidades e cursos alinhados às demandas futuras do mercado.</p>
+                </div>
+                <div class="solution-item">
+                    <h3>Insights Preditivos</h3>
+                    <p>Acompanhe tendências de mercado e receba alertas sobre novas oportunidades e riscos.</p>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });">Quero Me Preparar!</button>
+        </div>
+    </section>
+
+    <section id="contact" class="section-dark">
+        <div class="container">
+            <h2>Junte-se à Nossa Comunidade!</h2>
+            <p>Receba insights exclusivos e prepare-se para o futuro do trabalho.</p>
+            <form id="lead-form">
+                <input type="text" id="name" placeholder="Seu Nome" required>
+                <input type="email" id="email" placeholder="Seu Melhor E-mail" required>
+                <button type="submit" class="btn-primary">Quero Receber Novidades</button>
+            </form>
+            <p id="form-message" style="margin-top: 20px; color: #fff;"></p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 FutureProof Navigator. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
+
