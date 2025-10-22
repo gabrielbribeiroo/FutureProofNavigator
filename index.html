@@ -27,7 +27,23 @@
             <div class="hero-content">
                 <h1>Seu Guia Essencial para o Futuro do Trabalho</h1>
                 <p>Prepare-se para as transformações do mercado impulsionadas pela IA. Mantenha-se relevante, adapte-se e prospere.</p>
-                <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });">Comece Sua Jornada</button>
+                <div id="initial-form">
+                    <select id="area-selection" required>
+                        <option value="">Selecione sua área de atuação</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="publicidade">Publicidade</option>
+                        <option value="financas">Finanças</option>
+                        <option value="construcao">Construção Civil</option>
+                        <option value="outra">Outra</option>
+                    </select>
+                    <button class="btn-primary" onclick="startQuiz()">Comece Sua Jornada</button>
+                </div>
+                <div id="quiz-container" style="display:none;">
+                    <div id="question-container"></div>
+                    <button id="next-btn" style="display:none;" onclick="nextQuestion()">Próxima</button>
+                    <button id="submit-quiz" style="display:none;" onclick="submitQuiz()">Finalizar Quiz</button>
+                    <p id="feedback" style="color:#28a745;"></p>
+                </div>
             </div>
         </div>
     </section>
@@ -78,11 +94,15 @@
         <div class="container">
             <h2>Junte-se à Nossa Comunidade!</h2>
             <p>Receba insights exclusivos e prepare-se para o futuro do trabalho.</p>
-            <form id="lead-form">
-                <input type="text" id="name" placeholder="Seu Nome" required>
-                <input type="email" id="email" placeholder="Seu Melhor E-mail" required>
-                <button type="submit" class="btn-primary">Quero Receber Novidades</button>
-            </form>
+            <div id="mc_embed_signup">
+                <form action="https://seuusername.us20.list-manage.com/subscribe/post?u=ID&u=ID" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                    <input type="text" value="" name="NAME" class="required" id="mce-NAME" placeholder="Seu Nome" required>
+                    <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Seu Melhor E-mail" required>
+                    <input type="hidden" name="AREA" id="area-hidden">
+                    <input type="hidden" name="QUIZ_SCORE" id="quiz-score-hidden">
+                    <input type="submit" value="Quero Receber Novidades" name="subscribe" id="mc-embedded-subscribe" class="button btn-primary">
+                </form>
+            </div>
             <p id="form-message" style="margin-top: 20px; color: #fff;"></p>
         </div>
     </section>
@@ -93,7 +113,103 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedArea = "";
+
+        const quizData = {
+            tecnologia: [
+                { question: "Qual o maior impacto da IA em tecnologia?", options: ["Automatização de código", "Análise de big data", "Desenvolvimento de IA", "Manutenção de sistemas"], answer: "Automatização de código" },
+                { question: "Quanto tempo você dedica a aprender novas linguagens?", options: ["Menos de 1h/semana", "1-3h/semana", "4-6h/semana", "Mais de 6h/semana"], answer: "1-3h/semana" },
+                { question: "Você usa IA para debugging?", options: ["Sim, sempre", "Às vezes", "Não, mas pretendo", "Nunca"], answer: "Não, mas pretendo" },
+                { question: "Qual habilidade é mais valiosa em tech?", options: ["Programação", "Aprendizado de máquina", "Segurança", "Gestão de projetos"], answer: "Aprendizado de máquina" },
+                { question: "A IA substituirá programadores em 5 anos?", options: ["Sim, totalmente", "Parcialmente", "Não, nunca", "Não sei"], answer: "Parcialmente" }
+            ],
+            publicidade: [
+                { question: "Qual o maior impacto da IA na publicidade?", options: ["Criação de anúncios", "Análise de público", "Gestão de campanhas", "Design gráfico"], answer: "Análise de público" },
+                { question: "Você usa ferramentas de IA para segmentação?", options: ["Sim, regularmente", "Às vezes", "Não, mas pretendo", "Nunca"], answer: "Não, mas pretendo" },
+                { question: "Quanto tempo investe em tendências digitais?", options: ["Menos de 1h/semana", "1-3h/semana", "4-6h/semana", "Mais de 6h/semana"], answer: "1-3h/semana" },
+                { question: "Qual skill é mais crucial na publicidade hoje?", options: ["Criatividade", "Análise de dados", "Redação", "Estratégia"], answer: "Análise de dados" },
+                { question: "A IA pode substituir criativos em 5 anos?", options: ["Sim, totalmente", "Parcialmente", "Não, nunca", "Não sei"], answer: "Parcialmente" }
+            ],
+            financas: [
+                { question: "Qual o maior impacto da IA em finanças?", options: ["Análise de risco", "Previsão de mercado", "Automação de relatórios", "Gestão de portfólio"], answer: "Análise de risco" },
+                { question: "Você usa IA para análise de investimentos?", options: ["Sim, regularmente", "Às vezes", "Não, mas pretendo", "Nunca"], answer: "Não, mas pretendo" },
+                { question: "Quanto tempo dedica a estudar tendências econômicas?", options: ["Menos de 1h/semana", "1-3h/semana", "4-6h/semana", "Mais de 6h/semana"], answer: "1-3h/semana" },
+                { question: "Qual habilidade é mais valiosa em finanças?", options: ["Análise financeira", "Previsão", "Regulamentação", "Negociação"], answer: "Previsão" },
+                { question: "A IA substituirá analistas em 5 anos?", options: ["Sim, totalmente", "Parcialmente", "Não, nunca", "Não sei"], answer: "Parcialmente" }
+            ],
+            construcao: [
+                { question: "Qual o maior impacto da IA na construção?", options: ["Planejamento de projetos", "Monitoramento de obras", "Manutenção preditiva", "Design arquitetônico"], answer: "Monitoramento de obras" },
+                { question: "Você usa IA para gestão de canteiros?", options: ["Sim, regularmente", "Às vezes", "Não, mas pretendo", "Nunca"], answer: "Não, mas pretendo" },
+                { question: "Quanto tempo investe em novas tecnologias?", options: ["Menos de 1h/semana", "1-3h/semana", "4-6h/semana", "Mais de 6h/semana"], answer: "1-3h/semana" },
+                { question: "Qual skill é mais importante na construção?", options: ["Gestão de projetos", "Engenharia", "Segurança", "Tecnologia"], answer: "Gestão de projetos" },
+                { question: "A IA substituirá engenheiros em 5 anos?", options: ["Sim, totalmente", "Parcialmente", "Não, nunca", "Não sei"], answer: "Parcialmente" }
+            ],
+            outra: [
+                { question: "Qual o maior impacto da IA na sua área?", options: ["Automatização de tarefas", "Análise de dados", "Criação de conteúdo", "Nenhum impacto"], answer: "Automatização de tarefas" },
+                { question: "Quanto tempo você dedica ao aprendizado contínuo?", options: ["Menos de 1h/semana", "1-3h/semana", "4-6h/semana", "Mais de 6h/semana"], answer: "1-3h/semana" },
+                { question: "Você já usou ferramentas de IA no trabalho?", options: ["Sim, regularmente", "Às vezes", "Não, mas pretendo", "Nunca"], answer: "Não, mas pretendo" },
+                { question: "Qual habilidade você acha mais valiosa?", options: ["Resolução de problemas", "Criatividade", "Gestão", "Comunicação"], answer: "Resolução de problemas" },
+                { question: "A IA pode afetar seu cargo em 5 anos?", options: ["Sim, totalmente", "Parcialmente", "Não, nunca", "Não sei"], answer: "Parcialmente" }
+            ]
+        };
+
+        function startQuiz() {
+            selectedArea = document.getElementById("area-selection").value;
+            if (!selectedArea) {
+                alert("Por favor, selecione sua área de atuação!");
+                return;
+            }
+            document.getElementById("initial-form").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion < 5) {
+                const questionContainer = document.getElementById("question-container");
+                const currentQuiz = quizData[selectedArea];
+                questionContainer.innerHTML = `
+                    <h3>${currentQuiz[currentQuestion].question}</h3>
+                    ${currentQuiz[currentQuestion].options.map((option, index) => `
+                        <button onclick="checkAnswer('${option}')" style="display:block;margin:5px;padding:10px;border-radius:5px;">${option}</button>
+                    `).join('')}
+                `;
+                document.getElementById("next-btn").style.display = "none";
+                document.getElementById("submit-quiz").style.display = "none";
+                document.getElementById("feedback").textContent = "";
+            } else {
+                document.getElementById("question-container").innerHTML = "<h3>Quiz concluído! Clique em Finalizar para enviar.</h3>";
+                document.getElementById("submit-quiz").style.display = "block";
+            }
+        }
+
+        function checkAnswer(selected) {
+            const currentQuiz = quizData[selectedArea];
+            const correct = currentQuiz[currentQuestion].answer;
+            if (selected === correct) {
+                score++;
+                document.getElementById("feedback").textContent = "Correto! 🎉";
+            } else {
+                document.getElementById("feedback").textContent = `Errado. A resposta certa era: ${correct}.`;
+            }
+            document.getElementById("next-btn").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function submitQuiz() {
+            const area = selectedArea;
+            document.getElementById("area-hidden").value = area;
+            document.getElementById("quiz-score-hidden").value = score;
+            document.getElementById("quiz-container").style.display = "none";
+            document.getElementById("contact").scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
-
