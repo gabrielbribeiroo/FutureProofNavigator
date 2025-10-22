@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,240 +8,252 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">FutureProof Navigator</div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="index.html#problem">O Problema</a></li>
-                    <li><a href="index.html#solution">Soluções</a></li>
-                    <li><a href="index.html#contact">Contato</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<header>
+    <div class="container">
+        <div class="logo">FutureProof Navigator</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#problem">O Problema</a></li>
+                <li><a href="index.html#solution">Soluções</a></li>
+                <li><a href="index.html#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-    <section class="quiz-section">
-        <div class="container">
-            <div class="quiz-content">
-                <h1>Quiz de Impacto da IA</h1>
-                <p class="subtitle">Responda às perguntas para avaliar o impacto da IA na sua área.</p>
-                <div class="quiz-container">
-                    <div class="quiz-progress">
-                        <div class="progress-bar">
-                            <div id="progress-fill" style="width: 0%"></div>
-                        </div>
-                        <span id="progress-text">Pergunta 1 de 8</span>
+<section class="quiz-section">
+    <div class="container">
+        <div class="quiz-content">
+            <h1>Quiz de Impacto da IA</h1>
+            <p class="subtitle">Responda às perguntas para avaliar o impacto da IA na sua área.</p>
+
+            <div class="quiz-container">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div id="progress-fill" style="width: 0%"></div>
                     </div>
-                    <div id="question-container"></div>
-                    <div id="options-container"></div>
-                    <div class="quiz-navigation">
-                        <button id="prev-btn" class="btn-secondary" onclick="prevQuestion()">Retornar</button>
-                        <button id="next-btn" class="btn-primary" onclick="nextQuestion()">Avançar</button>
-                        <button id="submit-quiz" class="btn-primary" style="display:none;" onclick="submitQuiz()">Ver Meu Score de Impacto</button>
-                    </div>
+                    <span id="progress-text">Pergunta 1 de 8</span>
+                </div>
+
+                <div id="question-container"></div>
+                <div id="options-container"></div>
+
+                <div class="quiz-navigation">
+                    <button id="prev-btn" class="btn-secondary" onclick="prevQuestion()">Retornar</button>
+                    <button id="next-btn" class="btn-primary" onclick="nextQuestion()">Avançar</button>
+                    <button id="submit-quiz" class="btn-primary" style="display:none;" onclick="submitQuiz()">Ver Meu Score de Impacto</button>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 FutureProof Navigator. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-    <script>
-        let currentQuestion = 0;
-        let responses = {};
-        let selectedArea = "";
+<footer>
+    <div class="container">
+        <p>&copy; 2025 FutureProof Navigator. Todos os direitos reservados.</p>
+    </div>
+</footer>
 
-        const quizData = {
-            tecnologia: [
-                { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT ou Copilot", "Ferramentas de análise de dados", "Não utilizo", "Outra ferramenta"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Perda do emprego", "Obsolecência de habilidades", "Falta de tempo para aprendizado", "Outro motivo"] },
-                { q: "Qual é o seu nível atual de programação?", options: ["Iniciante", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual habilidade você mais deseja aprimorar?", options: ["Inteligência Artificial/Machine Learning", "Cloud Computing", "Cibersegurança", "DevOps"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ],
-            publicidade: [
-                { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT para redação", "Análise de público-alvo", "Design automatizado", "Não utilizo"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Perda de criatividade", "Automação de campanhas", "Redução de demanda", "Outro motivo"] },
-                { q: "Qual é o seu nível atual de análise de dados?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual é o seu foco principal no trabalho?", options: ["Criação de conteúdo", "Mídia paga", "Estratégia", "Mídias sociais"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ],
-            financas: [
-                { q: "Qual ferramenta financeira você utiliza mais frequentemente?", options: ["Excel avançado", "Python ou R", "Power BI", "Não utilizo"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Automação de análises", "Perda de precisão", "Falta de controle", "Outro motivo"] },
-                { q: "Qual é o seu nível atual de modelagem financeira?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual área de interesse domina seu trabalho?", options: ["Investimentos", "Gestão de riscos", "Fintech", "Compliance"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ],
-            construcao: [
-                { q: "Qual software você utiliza mais frequentemente?", options: ["AutoCAD ou Revit", "Excel", "ERP", "Não utilizo"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Automação de projetos", "Redução de mão de obra", "Custo de adoção", "Outro motivo"] },
-                { q: "Qual é o seu nível atual de gestão de projetos?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual é a sua área de foco principal?", options: ["Planejamento", "Execução", "Manutenção", "Orçamentos"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ],
-            saude: [
-                { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["Sistemas de diagnóstico", "Análise de dados", "Não utilizo", "Outra ferramenta"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Erro médico", "Perda de humanização", "Questões regulatórias", "Outro motivo"] },
-                { q: "Qual é o seu nível de uso de tecnologia na saúde?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual é a sua área de foco principal?", options: ["Diagnóstico", "Tratamento", "Administração", "Pesquisa"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ],
-            educacao: [
-                { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["Plataformas EAD", "Avaliação automática", "Não utilizo", "Outra ferramenta"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Substituição de professores", "Falta de personalização", "Acesso desigual", "Outro motivo"] },
-                { q: "Qual é o seu nível de uso de tecnologia educacional?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual é a sua área de foco principal?", options: ["Ensino", "Gestão", "Pesquisa", "Treinamento"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ],
-            outra: [
-                { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT", "Análise de dados", "Automação", "Não utilizo"] },
-                { q: "Qual é o seu maior receio em relação à IA?", options: ["Incerteza geral", "Perda de controle", "Falta de recursos", "Outro motivo"] },
-                { q: "Qual é o seu nível técnico atual?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
-                { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
-                { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
-                { q: "Qual é o seu maior desafio atual no trabalho?", options: ["Falta de tempo", "Custo", "Complexidade", "Falta de motivação"] },
-                { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
-                { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
-            ]
-        };
+<script>
+    let currentQuestion = 0;
+    let responses = {};
+    let selectedArea = "";
 
-        function loadQuestion() {
-            const questionContainer = document.getElementById("question-container");
-            const optionsContainer = document.getElementById("options-container");
-            const prevBtn = document.getElementById("prev-btn");
-            const nextBtn = document.getElementById("next-btn");
-            const submitBtn = document.getElementById("submit-quiz");
+    const quizData = {
+    tecnologia: [
+        { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT ou Copilot", "Ferramentas de análise de dados", "Não utilizo", "Outra ferramenta"] },
+        { q: "Qual é o seu maior receio em relação à IA?", options: ["Perda do emprego", "Obsolecência de habilidades", "Falta de tempo para aprendizado", "Outro motivo"] },
+        { q: "Qual é o seu nível atual de programação?", options: ["Iniciante", "Intermediário", "Avançado", "Especialista"] },
+        { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+        { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+        { q: "Qual habilidade você mais deseja aprimorar?", options: ["Inteligência Artificial/Machine Learning", "Cloud Computing", "Cibersegurança", "DevOps"] },
+        { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+        { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+    ],
+    publicidade: [
+        { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT para redação", "Análise de público-alvo", "Design automatizado", "Não utilizo"] },
+        { q: "Qual é o seu maior receio em relação à IA?", options: ["Perda de criatividade", "Automação de campanhas", "Redução de demanda", "Outro motivo"] },
+        { q: "Qual é o seu nível atual de análise de dados?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
+        { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+        { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+        { q: "Qual é o seu foco principal no trabalho?", options: ["Criação de conteúdo", "Mídia paga", "Estratégia", "Mídias sociais"] },
+        { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+        { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+    ],
+    financas: [
+        { q: "Qual ferramenta financeira você utiliza mais frequentemente?", options: ["Excel avançado", "Python ou R", "Power BI", "Não utilizo"] },
+        { q: "Qual é o seu maior receio em relação à IA?", options: ["Automação de análises", "Perda de precisão", "Falta de controle", "Outro motivo"] },
+        { q: "Qual é o seu nível atual de modelagem financeira?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
+        { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+        { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+        { q: "Qual área de interesse domina seu trabalho?", options: ["Investimentos", "Gestão de riscos", "Fintech", "Compliance"] },
+        { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+        { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+    ],
+    construcao: [
+        { q: "Qual software você utiliza mais frequentemente?", options: ["AutoCAD ou Revit", "Excel", "ERP", "Não utilizo"] },
+        { q: "Qual é o seu maior receio em relação à IA?", options: ["Automação de projetos", "Redução de mão de obra", "Custo de adoção", "Outro motivo"] },
+        { q: "Qual é o seu nível atual de gestão de projetos?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
+        { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+        { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+        { q: "Qual é a sua área de foco principal?", options: ["Planejamento", "Execução", "Manutenção", "Orçamentos"] },
+        { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+        { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+    ],
+    saude: [
+        { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["Sistemas de diagnóstico", "Análise de dados", "Não utilizo", "Outra ferramenta"] },
+        { q: "Qual é o seu maior receio em relação à IA?", options: ["Erro médico", "Perda de humanização", "Questões regulatórias", "Outro motivo"] },
+        { q: "Qual é o seu nível de uso de tecnologia na saúde?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
+        { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+        { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+        { q: "Qual é a sua área de foco principal?", options: ["Diagnóstico", "Tratamento", "Administração", "Pesquisa"] },
+        { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+        { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+    ],
+    educacao: [
+        { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["Plataformas EAD", "Avaliação automática", "Não utilizo", "Outra ferramenta"] },
+        { q: "Qual é o seu maior receio em relação à IA?", options: ["Substituição de professores", "Falta de personalização", "Acesso desigual", "Outro motivo"] },
+        { q: "Qual é o seu nível de uso de tecnologia educacional?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
+        { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+        { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+        { q: "Qual é a sua área de foco principal?", options: ["Ensino", "Gestão", "Pesquisa", "Treinamento"] },
+        { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+        { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+    ],
+    outra: [
+        { q: "Qual ferramenta de IA você utiliza mais frequentemente?", options: ["ChatGPT", "Análise de dados", "Automação", "Não utilizo"] },
+        { q: "Qual é o seu maior receio em relação à IA?", options: ["Incerteza geral", "Perda de controle", "Falta de recursos", "Outro motivo"] },
+        { q: "Qual é o seu nível técnico atual?", options: ["Básico", "Intermediário", "Avançado", "Especialista"] },
+        { q: "Quanto você está disposto a investir mensalmente em aprendizado?", options: ["Nada", "Até R$100", "Entre R$101 e R$300", "Mais de R$300"] },
+        { q: "Qual é a sua urgência em se adaptar à IA?", options: ["Imediata", "Nos próximos 6 meses", "Nos próximos 12 meses", "Não urgente"] },
+        { q: "Qual é o seu maior desafio atual no trabalho?", options: ["Falta de tempo", "Custo", "Complexidade", "Falta de motivação"] },
+        { q: "Como você avalia o impacto atual da IA na sua área?", options: ["Alto", "Moderado", "Baixo", "Nenhum"] },
+        { q: "Qual é a maior barreira para aprender novas tecnologias?", options: ["Custo", "Falta de tempo", "Complexidade", "Falta de motivação"] }
+    ]
+    };
 
-            // Seleção inicial da área
-            if (!selectedArea) {
-                questionContainer.innerHTML = "<h3>Selecione sua área de atuação</h3>";
-                optionsContainer.innerHTML = `
-                    <select id="area-selection" class="contact-input">
-                        <option value="">Selecione...</option>
-                        <option value="tecnologia">Tecnologia</option>
-                        <option value="publicidade">Publicidade/Marketing</option>
-                        <option value="financas">Finanças</option>
-                        <option value="construcao">Construção Civil</option>
-                        <option value="saude">Saúde</option>
-                        <option value="educacao">Educação</option>
-                        <option value="outra">Outra</option>
-                    </select>
-                `;
-                document.getElementById("area-selection").onchange = (e) => {
-                    if (e.target.value) {
-                        selectedArea = e.target.value;
-                        currentQuestion = 0;
-                        loadQuestion();
-                    }
-                };
-                prevBtn.classList.add("btn-disabled");
-                nextBtn.classList.remove("btn-disabled");
-                submitBtn.style.display = "none";
-                return;
-            }
+    function loadQuestion() {
+    const questionContainer = document.getElementById("question-container");
+    const optionsContainer = document.getElementById("options-container");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const submitBtn = document.getElementById("submit-quiz");
 
-            const currentQuiz = quizData[selectedArea][currentQuestion];
-            document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
-            document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
+    // --- ETAPA INICIAL: SELEÇÃO DE ÁREA ---
+    if (!selectedArea) {
+        questionContainer.innerHTML = "<h3>Selecione sua área de atuação</h3>";
+        const areas = [
+            { value: "tecnologia", label: "Tecnologia" },
+            { value: "publicidade", label: "Publicidade / Marketing" },
+            { value: "financas", label: "Finanças" },
+            { value: "construcao", label: "Construção Civil" },
+            { value: "saude", label: "Saúde" },
+            { value: "educacao", label: "Educação" },
+            { value: "outra", label: "Outra" }
+        ];
 
-            questionContainer.innerHTML = `<h3>${currentQuiz.q}</h3>`;
-            optionsContainer.innerHTML = currentQuiz.options
-                .map(opt => `
-                    <label class="quiz-choice ${responses[`q${currentQuestion}`] === opt ? 'selected' : ''}" onclick="selectAnswer(${currentQuestion}, '${opt}', this)">
-                        <input type="radio" name="q${currentQuestion}" value="${opt}">
-                        <span class="checkmark"></span>
-                        ${opt}
-                    </label>
-                `)
-                .join("");
+        optionsContainer.innerHTML = areas.map(a => `
+            <label class="quiz-choice ${selectedArea === a.value ? 'selected' : ''}" 
+                onclick="selectArea('${a.value}', this)">
+                <input type="radio" name="area" value="${a.value}">
+                <span class="checkmark"></span>
+                ${a.label}
+            </label>
+        `).join('');
 
-            // Controle dos botões
-            prevBtn.classList.toggle("btn-disabled", currentQuestion === 0);
-            nextBtn.classList.toggle("btn-disabled", !responses[`q${currentQuestion}`] || currentQuestion === 7);
+        prevBtn.classList.add("btn-disabled");
+        nextBtn.classList.add("btn-disabled");
+        submitBtn.style.display = "none";
+        return;
+    }
 
-            // Exibir ou ocultar botões conforme etapa
-            if (currentQuestion === 7) {
-                nextBtn.style.display = "none";
-                submitBtn.style.display = "inline-block";
-            } else {
-                nextBtn.style.display = "inline-block";
-                submitBtn.style.display = "none";
-            }
-        }
+    // --- QUESTÕES DO QUIZ ---
+    const currentQuiz = quizData[selectedArea][currentQuestion];
+    document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
+    document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
 
-        function selectAnswer(questionIndex, option, labelEl) {
-            responses[`q${questionIndex}`] = option;
+    questionContainer.innerHTML = `<h3>${currentQuiz.q}</h3>`;
+    optionsContainer.innerHTML = currentQuiz.options.map(opt => `
+        <label class="quiz-choice ${responses[`q${currentQuestion}`] === opt ? 'selected' : ''}"
+            onclick="selectAnswer(${currentQuestion}, '${opt}', this)">
+            <input type="radio" name="q${currentQuestion}" value="${opt}">
+            <span class="checkmark"></span>
+            ${opt}
+        </label>
+    `).join('');
 
-            // Atualiza visual
-            document.querySelectorAll(`[name='q${questionIndex}']`).forEach(el => el.parentElement.classList.remove('selected'));
-            labelEl.classList.add('selected');
+    prevBtn.classList.toggle("btn-disabled", currentQuestion === 0);
+    nextBtn.classList.toggle("btn-disabled", !responses[`q${currentQuestion}`] || currentQuestion === 7);
 
-            const nextBtn = document.getElementById("next-btn");
-            if (currentQuestion < 7) nextBtn.classList.remove("btn-disabled");
-        }
+    if (currentQuestion === 7) {
+        nextBtn.style.display = "none";
+        submitBtn.style.display = "inline-block";
+    } else {
+        nextBtn.style.display = "inline-block";
+        submitBtn.style.display = "none";
+    }
+    }
 
-        function prevQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                loadQuestion();
-            }
-        }
+    function selectArea(areaValue, labelEl) {
+    selectedArea = areaValue;
+    document.querySelectorAll(".quiz-choice").forEach(el => el.classList.remove("selected"));
+    labelEl.classList.add("selected");
+    document.getElementById("next-btn").classList.remove("btn-disabled");
+    document.getElementById("next-btn").onclick = function() {
+        currentQuestion = 0;
+        loadQuestion();
+    };
+    }
 
-        function nextQuestion() {
-            if (responses[`q${currentQuestion}`]) {
-                currentQuestion++;
-                loadQuestion();
-            }
-        }
+    function selectAnswer(questionIndex, option, labelEl) {
+    responses[`q${questionIndex}`] = option;
+    document.querySelectorAll(`[name='q${questionIndex}']`).forEach(el => el.parentElement.classList.remove('selected'));
+    labelEl.classList.add('selected');
+    if (currentQuestion < 7) document.getElementById("next-btn").classList.remove("btn-disabled");
+    }
 
-        function submitQuiz() {
-            if (!responses[`q${currentQuestion}`]) {
-                alert("Selecione uma opção antes de finalizar!");
-                return;
-            }
+    function prevQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        loadQuestion();
+    } else {
+        selectedArea = "";
+        loadQuestion();
+    }
+    }
 
-            let iaScore = 0;
-            const fearImpact = { "Perda do emprego": 4, "Obsolecência de habilidades": 3, "Falta de tempo para aprendizado": 2, "Outro motivo": 1 };
-            const urgencyImpact = { "Imediata": 4, "Nos próximos 6 meses": 3, "Nos próximos 12 meses": 2, "Não urgente": 1 };
-            const currentImpact = { "Alto": 4, "Moderado": 3, "Baixo": 2, "Nenhum": 1 };
+    function nextQuestion() {
+    if (responses[`q${currentQuestion}`]) {
+        currentQuestion++;
+        loadQuestion();
+    }
+    }
 
-            iaScore += fearImpact[responses.q1] || 1;
-            iaScore += urgencyImpact[responses.q4] || 1;
-            iaScore += currentImpact[responses.q6] || 1;
-            iaScore = Math.min(12, Math.max(3, iaScore));
+    function submitQuiz() {
+    if (!responses[`q${currentQuestion}`]) {
+        alert("Selecione uma opção antes de finalizar!");
+        return;
+    }
 
-            const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}`;
-            window.location.href = `index.html#contact${queryString}`;
-            alert(`Seu Score de Impacto da IA: ${iaScore}/12. Preencha o formulário para receber seu relatório!`);
-        }
+    let iaScore = 0;
+    const fearImpact = { "Perda do emprego": 4, "Obsolecência de habilidades": 3, "Falta de tempo para aprendizado": 2, "Outro motivo": 1 };
+    const urgencyImpact = { "Imediata": 4, "Nos próximos 6 meses": 3, "Nos próximos 12 meses": 2, "Não urgente": 1 };
+    const currentImpact = { "Alto": 4, "Moderado": 3, "Baixo": 2, "Nenhum": 1 };
 
-        // Inicializa quiz
-        window.onload = loadQuestion;
-    </script>
+    iaScore += fearImpact[responses.q1] || 1;
+    iaScore += urgencyImpact[responses.q4] || 1;
+    iaScore += currentImpact[responses.q6] || 1;
+    iaScore = Math.min(12, Math.max(3, iaScore));
+
+    const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}`;
+    window.location.href = `index.html#contact${queryString}`;
+    alert(`Seu Score de Impacto da IA: ${iaScore}/12. Preencha o formulário para receber seu relatório!`);
+    }
+
+    // Inicializa quiz
+    window.onload = loadQuestion;
+</script>
 
 </body>
 </html>
