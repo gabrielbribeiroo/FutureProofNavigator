@@ -194,12 +194,22 @@
         questionContainer.innerHTML = `<h3 id="question-title" tabindex="-1">${currentQuiz.q}</h3>`;
         optionsContainer.innerHTML = currentQuiz.options.map(opt => `
             <label class="quiz-choice ${responses[`q${currentQuestion}`] === opt ? 'selected' : ''}"
-                onclick="selectAnswer(${currentQuestion}, '${opt}', this)">
+                data-opt="${encodeURIComponent(opt)}"
+                onclick="selectAnswer(${currentQuestion}, this.dataset.opt, this)">
                 <input type="radio" name="q${currentQuestion}" value="${opt}">
                 <span class="checkmark"></span>
                 ${opt}
             </label>
         `).join('');
+
+        // Defesa adicional: garante captura via change nos radios
+        optionsContainer.querySelectorAll(`input[name="q${currentQuestion}"]`).forEach(function(input){
+            input.addEventListener('change', function(){
+                const lbl = this.parentElement;
+                const opt = encodeURIComponent(this.value);
+                selectAnswer(currentQuestion, opt, lbl);
+            });
+        });
 
         // Botão "Retornar" ativo desde a 1ª pergunta e com estilo verde
         prevBtn.classList.remove("btn-disabled");
@@ -235,13 +245,16 @@
     }
 
     function selectAnswer(questionIndex, option, labelEl) {
-        responses[`q${questionIndex}`] = option;
+        const decoded = decodeURIComponent(option || '');
+        responses[`q${questionIndex}`] = decoded;
         document.querySelectorAll(`[name='q${questionIndex}']`).forEach(el => el.parentElement.classList.remove('selected'));
         labelEl.classList.add('selected');
 
         // Habilita "Avançar" automaticamente após seleção
         const nextBtn = document.getElementById("next-btn");
         nextBtn.classList.remove("btn-disabled");
+        nextBtn.style.display = "inline-block";
+        nextBtn.onclick = nextQuestion;
     }
 
     function prevQuestion() {
