@@ -134,101 +134,120 @@
     };
 
     function loadQuestion() {
-    const questionContainer = document.getElementById("question-container");
-    const optionsContainer = document.getElementById("options-container");
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    const submitBtn = document.getElementById("submit-quiz");
+        const questionContainer = document.getElementById("question-container");
+        const optionsContainer = document.getElementById("options-container");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const submitBtn = document.getElementById("submit-quiz");
 
-    // --- ETAPA INICIAL: SELEÇÃO DE ÁREA ---
-    if (!selectedArea) {
-        questionContainer.innerHTML = "<h3>Selecione sua área de atuação</h3>";
-        const areas = [
-            { value: "tecnologia", label: "Tecnologia" },
-            { value: "publicidade", label: "Publicidade / Marketing" },
-            { value: "financas", label: "Finanças" },
-            { value: "construcao", label: "Construção Civil" },
-            { value: "saude", label: "Saúde" },
-            { value: "educacao", label: "Educação" },
-            { value: "outra", label: "Outra" }
-        ];
+        // --- ETAPA INICIAL: SELEÇÃO DE ÁREA ---
+        if (!selectedArea) {
+            questionContainer.innerHTML = "<h3>Selecione sua área de atuação</h3>";
+            const areas = [
+                { value: "tecnologia", label: "Tecnologia" },
+                { value: "publicidade", label: "Publicidade / Marketing" },
+                { value: "financas", label: "Finanças" },
+                { value: "construcao", label: "Construção Civil" },
+                { value: "saude", label: "Saúde" },
+                { value: "educacao", label: "Educação" },
+                { value: "outra", label: "Outra" }
+            ];
 
-        optionsContainer.innerHTML = areas.map(a => `
-            <label class="quiz-choice ${selectedArea === a.value ? 'selected' : ''}" 
-                onclick="selectArea('${a.value}', this)">
-                <input type="radio" name="area" value="${a.value}">
+            optionsContainer.innerHTML = areas.map(a => `
+                <label class="quiz-choice ${selectedArea === a.value ? 'selected' : ''}" 
+                    onclick="selectArea('${a.value}', this)">
+                    <input type="radio" name="area" value="${a.value}">
+                    <span class="checkmark"></span>
+                    ${a.label}
+                </label>
+            `).join('');
+
+            // Botões desativados no início
+            prevBtn.classList.add("btn-disabled");
+            nextBtn.classList.add("btn-disabled");
+            submitBtn.style.display = "none";
+            return;
+        }
+
+        // --- QUESTÕES DO QUIZ ---
+        const currentQuiz = quizData[selectedArea][currentQuestion];
+        document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
+        document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
+
+        questionContainer.innerHTML = `<h3>${currentQuiz.q}</h3>`;
+        optionsContainer.innerHTML = currentQuiz.options.map(opt => `
+            <label class="quiz-choice ${responses[`q${currentQuestion}`] === opt ? 'selected' : ''}"
+                onclick="selectAnswer(${currentQuestion}, '${opt}', this)">
+                <input type="radio" name="q${currentQuestion}" value="${opt}">
                 <span class="checkmark"></span>
-                ${a.label}
+                ${opt}
             </label>
         `).join('');
 
-        prevBtn.classList.add("btn-disabled");
-        nextBtn.classList.add("btn-disabled");
-        submitBtn.style.display = "none";
-        return;
-    }
+        // Habilita o botão "Retornar" após a 1ª pergunta
+        if (currentQuestion > 0) {
+            prevBtn.classList.remove("btn-disabled");
+        } else {
+            prevBtn.classList.add("btn-disabled");
+        }
 
-    // --- QUESTÕES DO QUIZ ---
-    const currentQuiz = quizData[selectedArea][currentQuestion];
-    document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
-    document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
-
-    questionContainer.innerHTML = `<h3>${currentQuiz.q}</h3>`;
-    optionsContainer.innerHTML = currentQuiz.options.map(opt => `
-        <label class="quiz-choice ${responses[`q${currentQuestion}`] === opt ? 'selected' : ''}"
-            onclick="selectAnswer(${currentQuestion}, '${opt}', this)">
-            <input type="radio" name="q${currentQuestion}" value="${opt}">
-            <span class="checkmark"></span>
-            ${opt}
-        </label>
-    `).join('');
-
-    prevBtn.classList.toggle("btn-disabled", currentQuestion === 0);
-    nextBtn.classList.toggle("btn-disabled", !responses[`q${currentQuestion}`] || currentQuestion === 7);
-
-    if (currentQuestion === 7) {
-        nextBtn.style.display = "none";
-        submitBtn.style.display = "inline-block";
-    } else {
-        nextBtn.style.display = "inline-block";
-        submitBtn.style.display = "none";
-    }
+        // Controla "Avançar" e "Enviar"
+        nextBtn.classList.toggle("btn-disabled", !responses[`q${currentQuestion}`]);
+        if (currentQuestion === quizData[selectedArea].length - 1) {
+            nextBtn.style.display = "none";
+            submitBtn.style.display = "inline-block";
+        } else {
+            nextBtn.style.display = "inline-block";
+            submitBtn.style.display = "none";
+        }
     }
 
     function selectArea(areaValue, labelEl) {
-    selectedArea = areaValue;
-    document.querySelectorAll(".quiz-choice").forEach(el => el.classList.remove("selected"));
-    labelEl.classList.add("selected");
-    document.getElementById("next-btn").classList.remove("btn-disabled");
-    document.getElementById("next-btn").onclick = function() {
-        currentQuestion = 0;
-        loadQuestion();
-    };
+        selectedArea = areaValue;
+        document.querySelectorAll(".quiz-choice").forEach(el => el.classList.remove("selected"));
+        labelEl.classList.add("selected");
+        const nextBtn = document.getElementById("next-btn");
+        nextBtn.classList.remove("btn-disabled");
+        nextBtn.onclick = function() {
+            currentQuestion = 0;
+            loadQuestion();
+        };
     }
 
     function selectAnswer(questionIndex, option, labelEl) {
-    responses[`q${questionIndex}`] = option;
-    document.querySelectorAll(`[name='q${questionIndex}']`).forEach(el => el.parentElement.classList.remove('selected'));
-    labelEl.classList.add('selected');
-    if (currentQuestion < 7) document.getElementById("next-btn").classList.remove("btn-disabled");
+        responses[`q${questionIndex}`] = option;
+        document.querySelectorAll(`[name='q${questionIndex}']`).forEach(el => el.parentElement.classList.remove('selected'));
+        labelEl.classList.add('selected');
+
+        // Habilita "Avançar" automaticamente após seleção
+        const nextBtn = document.getElementById("next-btn");
+        nextBtn.classList.remove("btn-disabled");
     }
 
     function prevQuestion() {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        loadQuestion();
-    } else {
-        selectedArea = "";
-        loadQuestion();
-    }
+        if (currentQuestion > 0) {
+            currentQuestion--;
+            loadQuestion();
+        } else {
+            selectedArea = "";
+            loadQuestion();
+        }
     }
 
     function nextQuestion() {
-    if (responses[`q${currentQuestion}`]) {
-        currentQuestion++;
-        loadQuestion();
+        const totalQuestions = quizData[selectedArea].length;
+        if (responses[`q${currentQuestion}`]) {
+            if (currentQuestion < totalQuestions - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                // Caso chegue na última e ainda clique em "Avançar"
+                document.getElementById("next-btn").style.display = "none";
+                document.getElementById("submit-quiz").style.display = "inline-block";
+            }
+        }
     }
-    }
+
 
     function submitQuiz() {
     if (!responses[`q${currentQuestion}`]) {
