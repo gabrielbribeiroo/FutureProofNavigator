@@ -8,6 +8,8 @@ on:
       - 'scripts/build-pdfs.js'
       - 'package.json'
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -33,5 +36,12 @@ jobs:
             echo "No PDF changes to commit";
           else
             git commit -m "chore(reports): build PDFs"
-            git push
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+            git push origin HEAD:${{ github.ref_name }}
           fi
+      - name: Upload PDFs as artifact (fallback)
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-pdfs
+          path: reports/*.pdf
+          if-no-files-found: ignore
