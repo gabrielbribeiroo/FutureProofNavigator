@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FutureProof Navigator - Descubra Seu Perfil IA-Proof</title>
-    <link rel="stylesheet" href="css/style.css"> <!-- Verifique se está na pasta css/ -->
+    <title>FutureProof Navigator - Prepare-se para o Impacto da IA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="container">
+            <div class="logo">FutureProof Navigator</div>
             <nav>
-                <div class="logo">FutureProof Navigator</div>
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#problem">O Problema</a></li>
-                    <li><a href="#solution">A Solução</a></li>
+                    <li><a href="#solution">Soluções</a></li>
                     <li><a href="#contact">Contato</a></li>
                 </ul>
             </nav>
@@ -24,110 +25,78 @@
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Descubra Seu Perfil IA-Proof</h1>
-                <p>Responda 5 perguntas rápidas e receba um e-book personalizado com sua trilha de aprendizado para o futuro do trabalho.</p>
-                
-                <div id="initial-form">
-                    <select id="area-selection" required>
-                        <option value="">👩‍💼 Selecione sua área de atuação</option>
-                        <option value="tecnologia">💻 Tecnologia</option>
-                        <option value="publicidade">📢 Publicidade/Marketing</option>
-                        <option value="financas">💰 Finanças</option>
-                        <option value="construcao">🏗️ Construção Civil</option>
-                        <option value="outra">❓ Outra área</option>
-                    </select>
-                    <br><br>
-                    <button class="btn-primary" onclick="startQuiz()">Iniciar Diagnóstico (2 min)</button>
-                </div>
-                
-                <div id="quiz-container" style="display:none;">
-                    <div class="quiz-progress">
-                        <div class="progress-bar">
-                            <div id="progress-fill" style="width: 0%"></div>
-                        </div>
-                        <span id="progress-text">Pergunta 1 de 5</span>
-                    </div>
-                    
-                    <div id="question-container"></div>
-                    <div id="options-container"></div>
-                    
-                    <button id="next-btn" class="btn-secondary" style="display:none; width:100%; margin-top:20px;" onclick="nextQuestion()">
-                        Próxima Pergunta
-                    </button>
-                    
-                    <button id="submit-quiz" class="btn-primary" style="display:none; width:100%; margin-top:20px;" onclick="submitQuiz()">
-                        Gerar Meu E-book Personalizado
-                    </button>
-                </div>
-                
-                <div id="profile-result" style="display:none; text-align:center; margin-top:30px;">
-                    <h3>Seu Perfil: <span id="profile-type"></span></h3>
-                    <p id="profile-description"></p>
-                    <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })">
-                        Receber E-book Personalizado
-                    </button>
-                </div>
+                <h1>Prepare-se para o Impacto da Inteligência Artificial</h1>
+                <p class="subtitle">Descubra como a IA está transformando sua área de atuação e receba um relatório personalizado.</p>
+                <button class="btn-primary" onclick="openQuizForm()">Inicie Agora</button>
             </div>
         </div>
     </section>
 
     <section id="problem" class="section-dark">
         <div class="container">
-            <h2>O Futuro do Trabalho Mudou. Você Está Pronto?</h2>
+            <h2>O Desafio do Futuro do Trabalho</h2>
+            <p class="subtitle">A automação e a IA estão redefinindo carreiras. Você está preparado?</p>
             <div class="problem-grid">
                 <div class="problem-item">
-                    <h3>A Faculdade Não Garante Mais Tudo</h3>
-                    <p>Diplomas são importantes, mas não são mais a única garantia de sucesso. O mercado exige habilidades dinâmicas e aprendizado contínuo.</p>
+                    <h3>Perda de Relevância</h3>
+                    <p>Habilidades tradicionais podem ser obsoletas em 5 anos devido à IA.</p>
                 </div>
                 <div class="problem-item">
-                    <h3>IA Substituindo Profissionais</h3>
-                    <p>Pessoas mais experientes podem ser substituídas em até 5 anos por IAs em tarefas rotineiras. A adaptação é chave para a longevidade da carreira.</p>
+                    <h3>Incerteza sobre Aprendizado</h3>
+                    <p>Dificuldade em identificar quais competências priorizar.</p>
                 </div>
                 <div class="problem-item">
-                    <h3>Setores em Transformação</h3>
-                    <p>Áreas como publicidade e finanças são mais afetadas que construção civil. Entenda onde sua profissão se encaixa e como se preparar.</p>
+                    <h3>Ansiedade por Automação</h3>
+                    <p>Notícias sobre IA geram preocupação com o futuro profissional.</p>
                 </div>
             </div>
+            <button class="btn-secondary" onclick="openQuizForm()">Avalie Seu Impacto</button>
         </div>
     </section>
 
     <section id="solution" class="section-light">
         <div class="container">
-            <h2>Nossa Solução: Relevância e Adaptabilidade Contínuas</h2>
-            <p class="subtitle">Receba um e-book 100% personalizado com:</p>
+            <h2>Nossas Soluções para o Futuro</h2>
+            <p class="subtitle">Equipamos você com insights e estratégias para prosperar.</p>
             <div class="solution-grid">
                 <div class="solution-item">
-                    <h3>📊 Análise do Seu Perfil</h3>
-                    <p>Seu nível atual de preparação para IA na sua área específica.</p>
+                    <h3>Relatório Personalizado</h3>
+                    <p>Análise detalhada do impacto da IA na sua área.</p>
                 </div>
                 <div class="solution-item">
-                    <h3>🎯 Trilha Personalizada</h3>
-                    <p>5 habilidades essenciais + cursos recomendados para você.</p>
+                    <h3>Trilhas de Desenvolvimento</h3>
+                    <p>Recomendações de habilidades essenciais para o mercado.</p>
                 </div>
                 <div class="solution-item">
-                    <h3>⚡ Plano de Ação</h3>
-                    <p>Cronograma de 30 dias para implementar mudanças reais.</p>
+                    <h3>Alertas de Tendências</h3>
+                    <p>Atualizações sobre oportunidades e riscos futuros.</p>
                 </div>
             </div>
+            <button class="btn-primary" onclick="openQuizForm()">Comece Sua Jornada</button>
         </div>
     </section>
 
     <section id="contact" class="section-dark">
         <div class="container">
-            <h2>Receba Seu E-book Personalizado!</h2>
-            <div id="mc_embed_signup">
-                <form action="https://seuusername.us20.list-manage.com/subscribe/post?u=ID&u=ID" method="post" id="mc-embedded-subscribe-form">
-                    <input type="text" name="NAME" placeholder="Seu Nome" required>
-                    <input type="email" name="EMAIL" placeholder="Seu Melhor E-mail" required>
-                    
-                    <input type="hidden" name="AREA" id="area-hidden">
-                    <input type="hidden" name="PROFILE_TYPE" id="profile-type-hidden">
-                    <input type="hidden" name="RESPONSES" id="responses-hidden">
-                    
-                    <input type="submit" value="Enviar E-book Personalizado" class="btn-primary">
-                </form>
-            </div>
-            <p id="form-message"></p>
+            <h2>Receba Seu Relatório de Impacto</h2>
+            <p class="subtitle">Insira seus dados para acessar o relatório personalizado.</p>
+            <form id="lead-form" class="contact-form">
+                <input type="text" id="name" name="NAME" placeholder="Seu Nome" required>
+                <input type="email" id="email" name="EMAIL" placeholder="Seu E-mail" required>
+                <input type="hidden" name="AREA" id="area-hidden">
+                <input type="hidden" name="RESPONSES" id="responses-hidden">
+                <input type="hidden" name="IA_SCORE" id="ia-score-hidden">
+                <button type="submit" class="btn-primary">Enviar</button>
+            </form>
+            <p id="form-message" class="form-message"></p>
+        </div>
+    </section>
+
+    <section id="share" class="section-light">
+        <div class="container">
+            <h2>Compartilhe com um Colega</h2>
+            <p class="subtitle">Ajude outros a se prepararem para o futuro do trabalho.</p>
+            <button class="btn-secondary" onclick="sharePage()">Compartilhar</button>
         </div>
     </section>
 
@@ -137,159 +106,27 @@
         </div>
     </footer>
 
-    <script>
-        let currentQuestion = 0;
-        let responses = {};
-        let selectedArea = "";
-        
-        const quizData = {
-            tecnologia: [
-                { q: "Qual ferramenta de IA você mais usa?", 
-                  options: ["ChatGPT/Copilot", "Ferramentas de análise", "Nenhuma", "Outras"] },
-                { q: "Seu nível de programação atual:", 
-                  options: ["Iniciante", "Intermediário", "Avançado", "Expert"] },
-                { q: "Tempo semanal de aprendizado:", 
-                  options: ["0-2h", "3-5h", "6-10h", "+10h"] },
-                { q: "Prioridade de aprendizado:", 
-                  options: ["IA/ML", "Cloud", "Cybersecurity", "DevOps"] },
-                { q: "Confiança em automação de código:", 
-                  options: ["Muito alta", "Alta", "Média", "Baixa"] }
-            ],
-            publicidade: [
-                { q: "Ferramenta de IA mais usada:", 
-                  options: ["ChatGPT para copy", "Análise de público", "Design automatizado", "Nenhuma"] },
-                { q: "Nível de análise de dados:", 
-                  options: ["Básico", "Intermediário", "Avançado", "Expert"] },
-                { q: "Tempo em tendências digitais:", 
-                  options: ["0-2h", "3-5h", "6-10h", "+10h"] },
-                { q: "Foco principal:", 
-                  options: ["Conteúdo", "Mídia paga", "Estratégia", "Social Media"] },
-                { q: "Conforto com automação de anúncios:", 
-                  options: ["Muito alta", "Alta", "Média", "Baixa"] }
-            ],
-            financas: [
-                { q: "Ferramenta financeira mais usada:", 
-                  options: ["Excel avançado", "Python/R", "Power BI", "Nenhuma"] },
-                { q: "Nível de modelagem financeira:", 
-                  options: ["Básico", "Intermediário", "Avançado", "Expert"] },
-                { q: "Tempo estudando mercados:", 
-                  options: ["0-2h", "3-5h", "6-10h", "+10h"] },
-                { q: "Área de interesse:", 
-                  options: ["Investimentos", "Risco", "Fintech", "Compliance"] },
-                { q: "Confiança em análise preditiva:", 
-                  options: ["Muito alta", "Alta", "Média", "Baixa"] }
-            ],
-            construcao: [
-                { q: "Software mais usado:", 
-                  options: ["AutoCAD/Revit", "Excel", "ERP", "Nenhum"] },
-                { q: "Nível de gestão de projetos:", 
-                  options: ["Básico", "Intermediário", "Avançado", "Expert"] },
-                { q: "Tempo em novas tecnologias:", 
-                  options: ["0-2h", "3-5h", "6-10h", "+10h"] },
-                { q: "Área de foco:", 
-                  options: ["Planejamento", "Execução", "Manutenção", "Orçamentos"] },
-                { q: "Interesse em BIM/IA:", 
-                  options: ["Muito alta", "Alta", "Média", "Baixa"] }
-            ],
-            outra: [
-                { q: "Ferramenta de IA usada:", 
-                  options: ["ChatGPT", "Análise de dados", "Automação", "Nenhuma"] },
-                { q: "Nível técnico atual:", 
-                  options: ["Básico", "Intermediário", "Avançado", "Expert"] },
-                { q: "Tempo de aprendizado:", 
-                  options: ["0-2h", "3-5h", "6-10h", "+10h"] },
-                { q: "Maior desafio atual:", 
-                  options: ["Tempo", "Custo", "Complexidade", "Motivação"] },
-                { q: "Confiança em IA:", 
-                  options: ["Muito alta", "Alta", "Média", "Baixa"] }
-            ]
-        };
+    <div id="quiz-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeQuizModal()">&times;</span>
+            <div class="quiz-container">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div id="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span id="progress-text">Pergunta 1 de 8</span>
+                </div>
+                <div id="question-container"></div>
+                <div id="options-container"></div>
+                <div class="quiz-navigation">
+                    <button id="prev-btn" class="btn-secondary" style="display:none;" onclick="prevQuestion()">Anterior</button>
+                    <button id="next-btn" class="btn-primary" style="display:none;" onclick="nextQuestion()">Próxima</button>
+                    <button id="submit-quiz" class="btn-primary" style="display:none;" onclick="submitQuiz()">Ver Meu Score de Impacto</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        const profileTypes = {
-            "pioneer": { key: "pioneer", title: "🚀 Pioneiro IA", desc: "Você já usa IA e lidera mudanças. Foco em inovação.", color: "#28a745" },
-            "adaptor": { key: "adaptor", title: "⚡ Adaptador Rápido", desc: "Boa base técnica. Invista em automação.", color: "#007bff" },
-            "builder": { key: "builder", title: "🏗️ Construtor", desc: "Forte em prática. Adicione habilidades digitais.", color: "#ffc107" },
-            "starter": { key: "starter", title: "🌱 Iniciante Estratégico", desc: "Ponto de partida ideal. Comece com o básico.", color: "#fd7e14" }
-        };
-
-        function startQuiz() {
-            selectedArea = document.getElementById("area-selection").value;
-            if (!selectedArea) return alert("Selecione sua área!");
-            
-            document.getElementById("initial-form").style.display = "none";
-            document.getElementById("quiz-container").style.display = "block";
-            currentQuestion = 0;
-            responses = {};
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            const currentQuiz = quizData[selectedArea][currentQuestion];
-            document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 5`;
-            document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 5) * 100}%`;
-            
-            document.getElementById("question-container").innerHTML = `<h3>${currentQuiz.q}</h3>`;
-            
-            const optionsContainer = document.getElementById("options-container");
-            optionsContainer.innerHTML = currentQuiz.options.map((opt, i) => 
-                `<label class="quiz-option">
-                    <input type="radio" name="q${currentQuestion}" value="${opt}" onchange="selectAnswer(${currentQuestion}, '${opt}')">
-                    ${opt}
-                </label>`
-            ).join('');
-            
-            document.getElementById("next-btn").style.display = currentQuestion > 0 ? "block" : "none";
-            document.getElementById("submit-quiz").style.display = "none";
-        }
-
-        function selectAnswer(questionIndex, option) {
-            responses[`q${questionIndex}`] = option;
-            document.getElementById("next-btn").style.display = "block";
-        }
-
-        function nextQuestion() {
-            if (!responses[`q${currentQuestion}`]) return alert("Selecione uma opção!");
-            if (currentQuestion < 4) {
-                currentQuestion++;
-                loadQuestion();
-            }
-        }
-
-        function submitQuiz() {
-            if (!responses[`q${currentQuestion}`]) return alert("Selecione uma opção antes de finalizar!");
-            
-            const profile = generateProfile();
-            
-            document.getElementById("quiz-container").style.display = "none";
-            document.getElementById("profile-result").style.display = "block";
-            
-            document.getElementById("profile-type").textContent = profile.title;
-            document.getElementById("profile-description").textContent = profile.desc;
-            document.getElementById("profile-type").style.color = profile.color;
-            
-            document.getElementById("area-hidden").value = selectedArea;
-            document.getElementById("profile-type-hidden").value = profile.key;
-            document.getElementById("responses-hidden").value = JSON.stringify(responses);
-        }
-
-        function generateProfile() {
-            const techTool = responses.q0 || "Nenhuma";
-            const skillLevel = responses.q1 || "Iniciante";
-            const learningTime = responses.q2 || "0-2h";
-            const focusArea = responses.q3 || "Nenhum";
-            const confidence = responses.q4 || "Baixa";
-
-            let profileScore = 0;
-            if (techTool !== "Nenhuma") profileScore += 2;
-            if (["Avançado", "Expert"].includes(skillLevel)) profileScore += 2;
-            if (["6-10h", "+10h"].includes(learningTime)) profileScore += 2;
-            if (["Muito alta", "Alta"].includes(confidence)) profileScore += 2;
-
-            if (profileScore >= 6) return profileTypes.pioneer;
-            if (profileScore >= 4) return profileTypes.adaptor;
-            if (profileScore >= 2) return profileTypes.builder;
-            return profileTypes.starter;
-        }
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>
