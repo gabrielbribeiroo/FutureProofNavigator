@@ -51,7 +51,6 @@
             <p>&copy; 2025 FutureProof Navigator. Todos os direitos reservados.</p>
         </div>
     </footer>
-
     <script>
         let currentQuestion = 0;
         let responses = {};
@@ -131,24 +130,37 @@
         };
 
         function loadQuestion() {
+            const questionContainer = document.getElementById("question-container");
+            const optionsContainer = document.getElementById("options-container");
+            const prevBtn = document.getElementById("prev-btn");
+            const nextBtn = document.getElementById("next-btn");
+            const submitBtn = document.getElementById("submit-quiz");
+
+            // Seleção inicial da área
             if (!selectedArea) {
-                const areaSelect = document.createElement("select");
-                areaSelect.id = "area-selection";
-                areaSelect.innerHTML = `
-                    <option value="">Selecione sua área de atuação</option>
-                    <option value="tecnologia">Tecnologia</option>
-                    <option value="publicidade">Publicidade/Marketing</option>
-                    <option value="financas">Finanças</option>
-                    <option value="construcao">Construção Civil</option>
-                    <option value="saude">Saúde</option>
-                    <option value="educacao">Educação</option>
-                    <option value="outra">Outra</option>
+                questionContainer.innerHTML = "<h3>Selecione sua área de atuação</h3>";
+                optionsContainer.innerHTML = `
+                    <select id="area-selection" class="contact-input">
+                        <option value="">Selecione...</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="publicidade">Publicidade/Marketing</option>
+                        <option value="financas">Finanças</option>
+                        <option value="construcao">Construção Civil</option>
+                        <option value="saude">Saúde</option>
+                        <option value="educacao">Educação</option>
+                        <option value="outra">Outra</option>
+                    </select>
                 `;
-                areaSelect.onchange = function() { selectedArea = this.value; loadQuestion(); };
-                document.getElementById("question-container").innerHTML = "<h3>Selecione sua área de atuação</h3>";
-                document.getElementById("options-container").innerHTML = areaSelect.outerHTML;
-                document.getElementById("prev-btn").classList.add("btn-disabled");
-                document.getElementById("next-btn").classList.remove("btn-disabled");
+                document.getElementById("area-selection").onchange = (e) => {
+                    if (e.target.value) {
+                        selectedArea = e.target.value;
+                        currentQuestion = 0;
+                        loadQuestion();
+                    }
+                };
+                prevBtn.classList.add("btn-disabled");
+                nextBtn.classList.remove("btn-disabled");
+                submitBtn.style.display = "none";
                 return;
             }
 
@@ -156,68 +168,80 @@
             document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
             document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
 
-            document.getElementById("question-container").innerHTML = `<h3>${currentQuiz.q}</h3>`;
-            const optionsContainer = document.getElementById("options-container");
-            optionsContainer.innerHTML = currentQuiz.options.map((opt, i) => 
-                `<label class="quiz-option">
-                    <input type="radio" name="q${currentQuestion}" value="${opt}" onchange="selectAnswer(${currentQuestion}, '${opt}')">
-                    ${opt}
-                </label>`
-            ).join('');
+            questionContainer.innerHTML = `<h3>${currentQuiz.q}</h3>`;
+            optionsContainer.innerHTML = currentQuiz.options
+                .map(opt => `
+                    <label class="quiz-choice ${responses[`q${currentQuestion}`] === opt ? 'selected' : ''}" onclick="selectAnswer(${currentQuestion}, '${opt}', this)">
+                        <input type="radio" name="q${currentQuestion}" value="${opt}">
+                        <span class="checkmark"></span>
+                        ${opt}
+                    </label>
+                `)
+                .join("");
 
-            document.getElementById("prev-btn").classList.toggle("btn-disabled", currentQuestion === 0);
-            document.getElementById("next-btn").classList.toggle("btn-disabled", currentQuestion === 7 || !responses[`q${currentQuestion}`]);
-            document.getElementById("submit-quiz").style.display = currentQuestion === 7 ? "inline-block" : "none";
+            // Controle dos botões
+            prevBtn.classList.toggle("btn-disabled", currentQuestion === 0);
+            nextBtn.classList.toggle("btn-disabled", !responses[`q${currentQuestion}`] || currentQuestion === 7);
+
+            // Exibir ou ocultar botões conforme etapa
             if (currentQuestion === 7) {
-                document.getElementById("next-btn").style.display = "none";
+                nextBtn.style.display = "none";
+                submitBtn.style.display = "inline-block";
             } else {
-                document.getElementById("next-btn").style.display = "inline-block";
+                nextBtn.style.display = "inline-block";
+                submitBtn.style.display = "none";
             }
         }
 
-        function selectAnswer(questionIndex, option) {
+        function selectAnswer(questionIndex, option, labelEl) {
             responses[`q${questionIndex}`] = option;
-            if (currentQuestion < 7) {
-                document.getElementById("next-btn").classList.remove("btn-disabled");
-            }
+
+            // Atualiza visual
+            document.querySelectorAll(`[name='q${questionIndex}']`).forEach(el => el.parentElement.classList.remove('selected'));
+            labelEl.classList.add('selected');
+
+            const nextBtn = document.getElementById("next-btn");
+            if (currentQuestion < 7) nextBtn.classList.remove("btn-disabled");
         }
 
         function prevQuestion() {
-            if (currentQuestion > 0 && !document.getElementById("prev-btn").classList.contains("btn-disabled")) {
+            if (currentQuestion > 0) {
                 currentQuestion--;
                 loadQuestion();
             }
         }
 
         function nextQuestion() {
-            if (responses[`q${currentQuestion}`] && !document.getElementById("next-btn").classList.contains("btn-disabled")) {
+            if (responses[`q${currentQuestion}`]) {
                 currentQuestion++;
                 loadQuestion();
             }
         }
 
         function submitQuiz() {
-            if (!responses[`q${currentQuestion}`]) return alert("Selecione uma opção antes de finalizar!");
-            
-            // Calcular Score de Impacto da IA
+            if (!responses[`q${currentQuestion}`]) {
+                alert("Selecione uma opção antes de finalizar!");
+                return;
+            }
+
             let iaScore = 0;
             const fearImpact = { "Perda do emprego": 4, "Obsolecência de habilidades": 3, "Falta de tempo para aprendizado": 2, "Outro motivo": 1 };
             const urgencyImpact = { "Imediata": 4, "Nos próximos 6 meses": 3, "Nos próximos 12 meses": 2, "Não urgente": 1 };
             const currentImpact = { "Alto": 4, "Moderado": 3, "Baixo": 2, "Nenhum": 1 };
-            
+
             iaScore += fearImpact[responses.q1] || 1;
             iaScore += urgencyImpact[responses.q4] || 1;
             iaScore += currentImpact[responses.q6] || 1;
-            iaScore = Math.min(12, Math.max(3, iaScore)); // Normaliza entre 3 e 12
+            iaScore = Math.min(12, Math.max(3, iaScore));
 
-            // Redireciona para o formulário na página principal com os dados
             const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}`;
             window.location.href = `index.html#contact${queryString}`;
             alert(`Seu Score de Impacto da IA: ${iaScore}/12. Preencha o formulário para receber seu relatório!`);
         }
 
-        // Carrega a primeira pergunta ao abrir a página
+        // Inicializa quiz
         window.onload = loadQuestion;
     </script>
+
 </body>
 </html>
