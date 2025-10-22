@@ -1,10 +1,18 @@
 // Função para abrir o quiz em uma nova aba
-function openQuizForm() {
+const supabaseClient = (typeof window !== 'undefined' && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY)
+    ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY)
+    : null;
+
+async function openQuizForm() {
+    if (supabaseClient) {
+        try { await supabaseClient.from('events').insert({ type: 'open_quiz', page: 'index' }); } catch (e) {}
+    }
     window.open("quiz.html", "_blank");
 }
 
 // Form Submission Logic
-document.getElementById("lead-form").addEventListener("submit", function(event) {
+let lastSubmitAt = 0;
+document.getElementById("lead-form").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const name = document.getElementById("name").value;
@@ -17,16 +25,55 @@ document.getElementById("lead-form").addEventListener("submit", function(event) 
         return;
     }
 
+    const area = document.getElementById("area-hidden").value;
+    const responses = document.getElementById("responses-hidden").value;
+    const iaScore = document.getElementById("ia-score-hidden").value;
+    const segmentScore = document.getElementById("segment-score-hidden").value;
+    const segmentGroup = document.getElementById("segment-group-hidden").value;
+
+    if (responses && responses.length > 5000) {
+        formMessage.textContent = "Respostas muito longas. Por favor, tente novamente.";
+        formMessage.style.color = "#e74c3c";
+        return;
+    }
+
+    const now = Date.now();
+    if (now - lastSubmitAt < 30000) {
+        formMessage.textContent = "Aguarde alguns segundos antes de enviar novamente.";
+        formMessage.style.color = "#e74c3c";
+        return;
+    }
+    lastSubmitAt = now;
+
+    if (supabaseClient) {
+        try {
+            await supabaseClient.from('leads').insert({ name, email, area, responses, ia_score: iaScore, segment_score: segmentScore, segment_group: segmentGroup });
+            await supabaseClient.from('events').insert({ type: 'submit_lead', page: 'index' });
+        } catch (e) {}
+    }
+
     formMessage.textContent = "Obrigado! Seu relatório será enviado em breve.";
     formMessage.style.color = "#2ecc71";
     document.getElementById("lead-form").reset();
+    document.getElementById("name").focus();
+    document.getElementById("contact").scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     console.log("Lead Capturado (Simulação):");
     console.log(`Nome: ${name}`);
     console.log(`Email: ${email}`);
-    console.log(`Área: ${document.getElementById("area-hidden").value}`);
-    console.log(`Respostas: ${document.getElementById("responses-hidden").value}`);
-    console.log(`Score IA: ${document.getElementById("ia-score-hidden").value}`);
+    console.log(`Área: ${area}`);
+    console.log(`Respostas: ${responses}`);
+    console.log(`Score IA: ${iaScore}`);
+    console.log(`Segment Score: ${segmentScore}`);
+    console.log(`Segment Group: ${segmentGroup}`);
+
+    if (supabaseClient) {
+        try {
+            await supabaseClient.functions.invoke('send-report', {
+                body: { name, email, area, responses, iaScore, segmentScore, segmentGroup }
+            });
+        } catch (e) {}
+    }
 });
 
 // Share Functionality
@@ -36,7 +83,10 @@ function sharePage() {
             title: "FutureProof Navigator",
             text: "Prepare-se para o impacto da IA na sua carreira! Confira este recurso.",
             url: window.location.href
-        }).then(() => console.log("Compartilhado com sucesso!"))
+        }).then(async () => { 
+            console.log("Compartilhado com sucesso!");
+            if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'share', page: 'index' }); } catch (e) {} }
+        })
           .catch((error) => console.log("Erro ao compartilhar:", error));
     } else {
         alert("Compartilhamento não suportado neste navegador. Copie o link: " + window.location.href);
@@ -49,4 +99,36 @@ window.onload = function() {
     document.getElementById("area-hidden").value = urlParams.get("area") || "";
     document.getElementById("responses-hidden").value = urlParams.get("responses") || "";
     document.getElementById("ia-score-hidden").value = urlParams.get("iaScore") || "";
+    document.getElementById("segment-score-hidden").value = urlParams.get("segmentScore") || "";
+    document.getElementById("segment-group-hidden").value = urlParams.get("segmentGroup") || "";
 };
+
+async function trackHeroStart() {
+    if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'cta_click', page: 'index', label: 'hero_start' }); } catch (e) {} }
+    openQuizForm();
+}
+
+async function missionQuiz() {
+    if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'cta_click', page: 'index', label: 'mission_quiz' }); } catch (e) {} }
+    openQuizForm();
+}
+
+async function missionScore() {
+    if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'cta_click', page: 'index', label: 'mission_score' }); } catch (e) {} }
+    openQuizForm();
+}
+
+async function missionReport() {
+    if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'cta_click', page: 'index', label: 'mission_report' }); } catch (e) {} }
+    location.href = '#contact';
+}
+
+async function problemCta() {
+    if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'cta_click', page: 'index', label: 'problem_quiz' }); } catch (e) {} }
+    openQuizForm();
+}
+
+async function solutionCta() {
+    if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'cta_click', page: 'index', label: 'solution_quiz' }); } catch (e) {} }
+    openQuizForm();
+}

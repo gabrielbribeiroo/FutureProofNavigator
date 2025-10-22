@@ -27,7 +27,31 @@
             <div class="hero-content">
                 <h1>Prepare-se para o Impacto da Inteligência Artificial</h1>
                 <p class="subtitle">Descubra como a IA está transformando sua área de atuação e receba um relatório personalizado.</p>
-                <button class="btn-primary" onclick="openQuizForm()">Inicie Agora</button>
+                <button class="btn-primary" onclick="trackHeroStart()">Inicie Agora</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="mission" class="section-light">
+        <div class="container">
+            <h2>Nossa Missão e Objetivos</h2>
+            <p class="subtitle">Ajudar profissionais a navegar a transição da IA com clareza sobre dores, urgência e orçamento por segmento.</p>
+            <div class="solution-grid">
+                <div class="solution-item">
+                    <h3>Diagnóstico Rápido</h3>
+                    <p>Identifique seu grupo no mapa de casos (use case map) com 8 perguntas.</p>
+                    <button class="btn-primary" onclick="missionQuiz()">Fazer o Quiz</button>
+                </div>
+                <div class="solution-item">
+                    <h3>Score Pessoal</h3>
+                    <p>Veja seu score de impacto da IA e recomendações iniciais.</p>
+                    <button class="btn-secondary" onclick="missionScore()">Ver Meu Score</button>
+                </div>
+                <div class="solution-item">
+                    <h3>Relatório por Segmento</h3>
+                    <p>Acesse o relatório de pesquisa na sua área (requer e-mail).</p>
+                    <button class="btn-primary" onclick="missionReport()">Acessar Relatório</button>
+                </div>
             </div>
         </div>
     </section>
@@ -50,7 +74,7 @@
                     <p>Notícias sobre IA geram preocupação com o futuro profissional.</p>
                 </div>
             </div>
-            <button class="btn-secondary" onclick="openQuizForm()">Avalie Seu Impacto</button>
+            <button class="btn-secondary" onclick="problemCta()">Avalie Seu Impacto</button>
         </div>
     </section>
 
@@ -72,7 +96,7 @@
                     <p>Atualizações sobre oportunidades e riscos futuros.</p>
                 </div>
             </div>
-            <button class="btn-primary" onclick="openQuizForm()">Comece Sua Jornada</button>
+            <button class="btn-primary" onclick="solutionCta()">Comece Sua Jornada</button>
         </div>
     </section>
 
@@ -86,6 +110,8 @@
                 <input type="hidden" name="AREA" id="area-hidden">
                 <input type="hidden" name="RESPONSES" id="responses-hidden">
                 <input type="hidden" name="IA_SCORE" id="ia-score-hidden">
+                <input type="hidden" name="SEGMENT_SCORE" id="segment-score-hidden">
+                <input type="hidden" name="SEGMENT_GROUP" id="segment-group-hidden">
                 <button type="submit" class="btn-primary">Enviar</button>
             </form>
             <p id="form-message" class="form-message"></p>
@@ -106,6 +132,11 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      window.SUPABASE_URL = "https://nycvzzbptvvmlwzujxws.supabase.co";
+      window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55Y3Z6emJwdHZ2bWx3enVqeHdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExNTIwMDcsImV4cCI6MjA3NjcyODAwN30.QfZcBl95o-hQhLigKWettH93TyIxMVana4sQl45O8y8";
+    </script>
     <script src="js/script.js"></script>
 </body>
 </html>

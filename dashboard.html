@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - FutureProof Navigator</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">FutureProof Navigator</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#" onclick="reloadData()">Atualizar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section-light" style="margin-top:90px;">
+    <div class="container">
+      <h2>Dashboard</h2>
+      <p class="subtitle">Taxa de conversão por CTA e distribuição de segmentos.</p>
+      <div style="max-width:900px;margin:0 auto;">
+        <h3>Conversão por CTA</h3>
+        <canvas id="ctaChart" height="120"></canvas>
+        <h3 style="margin-top:40px;">Distribuição de Segmentos</h3>
+        <canvas id="segmentChart" height="120"></canvas>
+      </div>
+      <p id="dash-message" class="form-message" style="text-align:center;margin-top:20px;"></p>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script>
+    window.SUPABASE_URL = window.SUPABASE_URL || "";
+    window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "";
+  </script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

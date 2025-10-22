@@ -218,6 +218,12 @@ h2 {
 /* Quiz Styles */
 .quiz-progress {
     margin-bottom: 20px;
+    position: sticky;
+    top: 85px;
+    z-index: 999;
+    background: #f4f7f6;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
 .progress-bar {

@@ -31,18 +31,25 @@
             <div class="quiz-container">
                 <div class="quiz-progress">
                     <div class="progress-bar">
-                        <div id="progress-fill" style="width: 0%"></div>
+                        <div id="progress-fill" role="progressbar" aria-label="Progresso do quiz" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1" style="width: 0%"></div>
                     </div>
                     <span id="progress-text">Pergunta 1 de 8</span>
                 </div>
 
-                <div id="question-container"></div>
-                <div id="options-container"></div>
+                <div id="question-container" aria-live="polite"></div>
+                <div id="options-container" role="radiogroup" aria-labelledby="question-title"></div>
 
                 <div class="quiz-navigation">
-                    <button id="prev-btn" class="btn-secondary" onclick="prevQuestion()">Retornar</button>
+                    <button id="prev-btn" class="btn-primary" onclick="prevQuestion()">Retornar</button>
                     <button id="next-btn" class="btn-primary" onclick="nextQuestion()">Avançar</button>
                     <button id="submit-quiz" class="btn-primary" style="display:none;" onclick="submitQuiz()">Ver Meu Score de Impacto</button>
+                </div>
+                <div id="closing-message" style="display:none; margin-top: 10px; font-weight:600; color:#2c3e50;">Você chegou ao fim do quiz. Para ver seu score e acessar o relatório de pesquisa, finalize abaixo.</div>
+                <div id="results-container" style="display:none; margin-top:20px;">
+                    <h3>Seu Score de Impacto da IA</h3>
+                    <p id="score-text" class="subtitle" style="margin-top:8px; margin-bottom:16px;"></p>
+                    <a id="report-cta" class="btn-primary" href="#" style="display:inline-block; margin-right:10px;">Ver relatório de pesquisa na sua área (requer e-mail)</a>
+                    <button class="btn-secondary" onclick="sharePage()">Compartilhar com um colega</button>
                 </div>
             </div>
         </div>
@@ -55,6 +62,11 @@
     </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    window.SUPABASE_URL = "https://nycvzzbptvvmlwzujxws.supabase.co";
+    window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55Y3Z6emJwdHZ2bWx3enVqeHdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExNTIwMDcsImV4cCI6MjA3NjcyODAwN30.QfZcBl95o-hQhLigKWettH93TyIxMVana4sQl45O8y8";
+</script>
 <script>
     let currentQuestion = 0;
     let responses = {};
@@ -143,6 +155,7 @@
         // --- ETAPA INICIAL: SELEÇÃO DE ÁREA ---
         if (!selectedArea) {
             questionContainer.innerHTML = "<h3>Selecione sua área de atuação</h3>";
+
             const areas = [
                 { value: "tecnologia", label: "Tecnologia" },
                 { value: "publicidade", label: "Publicidade / Marketing" },
@@ -162,6 +175,9 @@
                 </label>
             `).join('');
 
+        const qt = document.getElementById('question-title');
+        if (qt) qt.focus();
+
             // Botões desativados no início
             prevBtn.classList.add("btn-disabled");
             nextBtn.classList.add("btn-disabled");
@@ -173,8 +189,9 @@
         const currentQuiz = quizData[selectedArea][currentQuestion];
         document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
         document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
+        document.getElementById("progress-fill").setAttribute('aria-valuenow', String(currentQuestion + 1));
 
-        questionContainer.innerHTML = `<h3>${currentQuiz.q}</h3>`;
+        questionContainer.innerHTML = `<h3 id="question-title" tabindex="-1">${currentQuiz.q}</h3>`;
         optionsContainer.innerHTML = currentQuiz.options.map(opt => `
             <label class="quiz-choice ${responses[`q${currentQuestion}`] === opt ? 'selected' : ''}"
                 onclick="selectAnswer(${currentQuestion}, '${opt}', this)">
@@ -184,12 +201,10 @@
             </label>
         `).join('');
 
-        // Habilita o botão "Retornar" após a 1ª pergunta
-        if (currentQuestion > 0) {
-            prevBtn.classList.remove("btn-disabled");
-        } else {
-            prevBtn.classList.add("btn-disabled");
-        }
+        // Botão "Retornar" ativo desde a 1ª pergunta e com estilo verde
+        prevBtn.classList.remove("btn-disabled");
+        prevBtn.classList.remove("btn-secondary");
+        prevBtn.classList.add("btn-primary");
 
         // Controla "Avançar" e "Enviar"
         nextBtn.classList.toggle("btn-disabled", !responses[`q${currentQuestion}`]);
@@ -200,6 +215,9 @@
             nextBtn.style.display = "inline-block";
             submitBtn.style.display = "none";
         }
+        // Oculta mensagem de fechamento e resultados ao navegar
+        document.getElementById("closing-message").style.display = "none";
+        document.getElementById("results-container").style.display = "none";
     }
 
     function selectArea(areaValue, labelEl) {
@@ -241,33 +259,89 @@
                 currentQuestion++;
                 loadQuestion();
             } else {
-                // Caso chegue na última e ainda clique em "Avançar"
+                // Última pergunta: exibe mensagem de fechamento e botão de finalizar
                 document.getElementById("next-btn").style.display = "none";
                 document.getElementById("submit-quiz").style.display = "inline-block";
+                const msg = document.getElementById("closing-message");
+                msg.style.display = "block";
+                msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
     }
 
+    const supabaseClient = (typeof window !== 'undefined' && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY)
+        ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY)
+        : null;
 
-    function submitQuiz() {
-    if (!responses[`q${currentQuestion}`]) {
-        alert("Selecione uma opção antes de finalizar!");
-        return;
+    function segmentMapping(score) {
+        if (score >= 12) return "Alta Prioridade";
+        if (score >= 9) return "Prioridade";
+        if (score >= 6) return "Observação";
+        return "Baixa Prioridade";
     }
 
-    let iaScore = 0;
-    const fearImpact = { "Perda do emprego": 4, "Obsolecência de habilidades": 3, "Falta de tempo para aprendizado": 2, "Outro motivo": 1 };
-    const urgencyImpact = { "Imediata": 4, "Nos próximos 6 meses": 3, "Nos próximos 12 meses": 2, "Não urgente": 1 };
-    const currentImpact = { "Alto": 4, "Moderado": 3, "Baixo": 2, "Nenhum": 1 };
+    function submitQuiz() {
+        if (!responses[`q${currentQuestion}`]) {
+            alert("Selecione uma opção antes de finalizar!");
+            return;
+        }
 
-    iaScore += fearImpact[responses.q1] || 1;
-    iaScore += urgencyImpact[responses.q4] || 1;
-    iaScore += currentImpact[responses.q6] || 1;
-    iaScore = Math.min(12, Math.max(3, iaScore));
+        let iaScore = 0;
+        const fearImpact = { "Perda do emprego": 4, "Obsolecência de habilidades": 3, "Falta de tempo para aprendizado": 2, "Outro motivo": 1 };
+        const urgencyImpact = { "Imediata": 4, "Nos próximos 6 meses": 3, "Nos próximos 12 meses": 2, "Não urgente": 1 };
+        const currentImpact = { "Alto": 4, "Moderado": 3, "Baixo": 2, "Nenhum": 1 };
+        const budgetMap = { "Mais de R$300": 4, "Entre R$101 e R$300": 3, "Até R$100": 2, "Nada": 1 };
 
-    const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}`;
-    window.location.href = `index.html#contact${queryString}`;
-    alert(`Seu Score de Impacto da IA: ${iaScore}/12. Preencha o formulário para receber seu relatório!`);
+        const pain = responses.q1;
+        const budget = responses.q3;
+        const urgency = responses.q4;
+        const impactNow = responses.q6;
+
+        iaScore += fearImpact[responses.q1] || 1;
+        iaScore += urgencyImpact[urgency] || 1;
+        iaScore += currentImpact[impactNow] || 1;
+        iaScore = Math.min(12, Math.max(3, iaScore));
+
+        const segmentScore = (fearImpact[pain] || 1) + (budgetMap[budget] || 1) + (urgencyImpact[urgency] || 1) + (currentImpact[impactNow] || 1);
+        const segmentGroup = segmentMapping(segmentScore);
+
+        const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}&segmentScore=${encodeURIComponent(segmentScore)}&segmentGroup=${encodeURIComponent(segmentGroup)}`;
+
+        // Apresenta resultado na página e CTA para relatório (exige e-mail)
+        const results = document.getElementById("results-container");
+        document.getElementById("score-text").textContent = `Seu Score de Impacto da IA é ${iaScore}/12. Segmento: ${segmentGroup} (score ${segmentScore}/16).`;
+        const cta = document.getElementById("report-cta");
+        cta.href = `index.html#contact${queryString}`;
+        results.style.display = "block";
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        (async function() {
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('quiz_responses').insert({
+                        area: selectedArea,
+                        responses: responses,
+                        ia_score: iaScore,
+                        segment_score: segmentScore,
+                        segment_group: segmentGroup
+                    });
+                    await supabaseClient.from('events').insert({ type: 'submit_quiz', page: 'quiz' });
+                } catch (e) {}
+            }
+        })();
+    }
+
+    // Compartilhamento básico
+    function sharePage() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'FutureProof Navigator',
+                text: 'Veja meu score de impacto da IA e faça o quiz!',
+                url: window.location.href
+            }).catch(() => {});
+        } else {
+            alert('Copie e compartilhe este link: ' + window.location.href);
+        }
     }
 
     // Inicializa quiz
