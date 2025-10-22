@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,20 +27,19 @@
             <div class="quiz-content">
                 <h1>Quiz de Impacto da IA</h1>
                 <p class="subtitle">Responda às perguntas para avaliar o impacto da IA na sua área.</p>
-
                 <div class="quiz-container">
                     <div class="quiz-progress">
-                        <div class="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+                        <div class="progress-bar">
+                            <div id="progress-fill" style="width: 0%"></div>
+                        </div>
                         <span id="progress-text">Pergunta 1 de 8</span>
                     </div>
-
                     <div id="question-container"></div>
                     <div id="options-container"></div>
-
                     <div class="quiz-navigation">
-                        <button id="prev-btn" class="btn-secondary btn-disabled">Retornar</button>
-                        <button id="next-btn" class="btn-primary btn-disabled">Avançar</button>
-                        <button id="submit-quiz" class="btn-primary" style="display:none;">Ver Meu Score de Impacto</button>
+                        <button id="prev-btn" class="btn-secondary" onclick="prevQuestion()">Retornar</button>
+                        <button id="next-btn" class="btn-primary" onclick="nextQuestion()">Avançar</button>
+                        <button id="submit-quiz" class="btn-primary" style="display:none;" onclick="submitQuiz()">Ver Meu Score de Impacto</button>
                     </div>
                 </div>
             </div>
@@ -131,12 +130,11 @@
             ]
         };
 
-        /* ---------- CARREGA PERGUNTA ---------- */
         function loadQuestion() {
             if (!selectedArea) {
-                const sel = document.createElement("select");
-                sel.id = "area-selection";
-                sel.innerHTML = `
+                const areaSelect = document.createElement("select");
+                areaSelect.id = "area-selection";
+                areaSelect.innerHTML = `
                     <option value="">Selecione sua área de atuação</option>
                     <option value="tecnologia">Tecnologia</option>
                     <option value="publicidade">Publicidade/Marketing</option>
@@ -144,50 +142,44 @@
                     <option value="construcao">Construção Civil</option>
                     <option value="saude">Saúde</option>
                     <option value="educacao">Educação</option>
-                    <option value="outra">Outra</option>`;
-                sel.onchange = () => { selectedArea = sel.value; loadQuestion(); };
+                    <option value="outra">Outra</option>
+                `;
+                areaSelect.onchange = function() { selectedArea = this.value; loadQuestion(); };
                 document.getElementById("question-container").innerHTML = "<h3>Selecione sua área de atuação</h3>";
-                document.getElementById("options-container").innerHTML = sel.outerHTML;
-                setNavButtons(false, false);
+                document.getElementById("options-container").innerHTML = areaSelect.outerHTML;
+                document.getElementById("prev-btn").classList.add("btn-disabled");
+                document.getElementById("next-btn").classList.remove("btn-disabled");
                 return;
             }
 
-            const q = quizData[selectedArea][currentQuestion];
+            const currentQuiz = quizData[selectedArea][currentQuestion];
             document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
             document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
 
-            document.getElementById("question-container").innerHTML = `<h3>${q.q}</h3>`;
-
-            const opts = q.options.map((opt, i) => `
-                <label class="quiz-choice${responses[`q${currentQuestion}`] === opt ? " selected" : ""}">
+            document.getElementById("question-container").innerHTML = `<h3>${currentQuiz.q}</h3>`;
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = currentQuiz.options.map((opt, i) => 
+                `<label class="quiz-option">
                     <input type="radio" name="q${currentQuestion}" value="${opt}" onchange="selectAnswer(${currentQuestion}, '${opt}')">
-                    <span class="checkmark"></span>
                     ${opt}
-                </label>`).join("");
+                </label>`
+            ).join('');
 
-            document.getElementById("options-container").innerHTML = opts;
-
-            setNavButtons(currentQuestion > 0, currentQuestion < 7);
+            document.getElementById("prev-btn").classList.toggle("btn-disabled", currentQuestion === 0);
+            document.getElementById("next-btn").classList.toggle("btn-disabled", currentQuestion === 7 || !responses[`q${currentQuestion}`]);
             document.getElementById("submit-quiz").style.display = currentQuestion === 7 ? "inline-block" : "none";
-            if (currentQuestion === 7) document.getElementById("next-btn").style.display = "none";
+            if (currentQuestion === 7) {
+                document.getElementById("next-btn").style.display = "none";
+            } else {
+                document.getElementById("next-btn").style.display = "inline-block";
+            }
         }
 
-        /* ---------- CONTROLE DE BOTÕES ---------- */
-        function setNavButtons(prevEnabled, nextEnabled) {
-            const prev = document.getElementById("prev-btn");
-            const next = document.getElementById("next-btn");
-            prev.classList.toggle("btn-disabled", !prevEnabled);
-            next.classList.toggle("btn-disabled", !nextEnabled);
-        }
-
-        function selectAnswer(idx, value) {
-            responses[`q${idx}`] = value;
-            // habilita Avançar imediatamente
-            document.getElementById("next-btn").classList.remove("btn-disabled");
-            // atualiza visual da opção selecionada
-            document.querySelectorAll(`input[name="q${idx}"]`).forEach(r => {
-                r.parentElement.classList.toggle("selected", r.checked);
-            });
+        function selectAnswer(questionIndex, option) {
+            responses[`q${questionIndex}`] = option;
+            if (currentQuestion < 7) {
+                document.getElementById("next-btn").classList.remove("btn-disabled");
+            }
         }
 
         function prevQuestion() {
@@ -198,32 +190,33 @@
         }
 
         function nextQuestion() {
-            if (!responses[`q${currentQuestion}`]) return; // já está garantido pelo botão desabilitado
-            if (currentQuestion < 7) {
+            if (responses[`q${currentQuestion}`] && !document.getElementById("next-btn").classList.contains("btn-disabled")) {
                 currentQuestion++;
                 loadQuestion();
             }
         }
 
-        /* ---------- SUBMISSÃO ---------- */
         function submitQuiz() {
             if (!responses[`q${currentQuestion}`]) return alert("Selecione uma opção antes de finalizar!");
-
-            // cálculo do score (mesmo algoritmo anterior)
+            
+            // Calcular Score de Impacto da IA
             let iaScore = 0;
-            const fear = { "Perda do emprego":4, "Obsolecência de habilidades":3, "Falta de tempo para aprender":2, "Outro motivo":1 };
-            const urg = { "Imediata":4, "Nos próximos 6 meses":3, "Nos próximos 12 meses":2, "Não urgente":1 };
-            const cur = { "Alto":4, "Moderado":3, "Baixo":2, "Nenhum":1 };
-            iaScore += fear[responses.q1] || 1;
-            iaScore += urg[responses.q4] || 1;
-            iaScore += cur[responses.q6] || 1;
-            iaScore = Math.min(12, Math.max(3, iaScore));
+            const fearImpact = { "Perda do emprego": 4, "Obsolecência de habilidades": 3, "Falta de tempo para aprendizado": 2, "Outro motivo": 1 };
+            const urgencyImpact = { "Imediata": 4, "Nos próximos 6 meses": 3, "Nos próximos 12 meses": 2, "Não urgente": 1 };
+            const currentImpact = { "Alto": 4, "Moderado": 3, "Baixo": 2, "Nenhum": 1 };
+            
+            iaScore += fearImpact[responses.q1] || 1;
+            iaScore += urgencyImpact[responses.q4] || 1;
+            iaScore += currentImpact[responses.q6] || 1;
+            iaScore = Math.min(12, Math.max(3, iaScore)); // Normaliza entre 3 e 12
 
-            const qs = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${iaScore}`;
-            window.location.href = `index.html#contact${qs}`;
+            // Redireciona para o formulário na página principal com os dados
+            const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}`;
+            window.location.href = `index.html#contact${queryString}`;
             alert(`Seu Score de Impacto da IA: ${iaScore}/12. Preencha o formulário para receber seu relatório!`);
         }
 
+        // Carrega a primeira pergunta ao abrir a página
         window.onload = loadQuestion;
     </script>
 </body>
