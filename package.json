@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build-pdfs": "node scripts/generate-pdfs.js"
+    "build-pdfs": "node scripts/generate-pdfs.js",
+    "build:pdfs": "npm run build-pdfs"
   },
   "dependencies": {
     "puppeteer": "22.15.0"
