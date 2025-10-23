@@ -21,6 +21,13 @@ async function htmlToPdf(browser, inputPath, outputPath) {
     { in: 'construcao.html', out: 'construcao.pdf' },
     { in: 'saude.html', out: 'saude.pdf' },
     { in: 'educacao.html', out: 'educacao.pdf' },
+    { in: 'industria.html', out: 'industria.pdf' },
+    { in: 'servicos.html', out: 'servicos.pdf' },
+    { in: 'comercio.html', out: 'comercio.pdf' },
+    { in: 'governo.html', out: 'governo.pdf' },
+    { in: 'logistica.html', out: 'logistica.pdf' },
+    { in: 'empreendedor.html', out: 'empreendedor.pdf' },
+    { in: 'direito.html', out: 'direito.pdf' },
     { in: 'outra.html', out: 'outra.pdf' }
   ];
 

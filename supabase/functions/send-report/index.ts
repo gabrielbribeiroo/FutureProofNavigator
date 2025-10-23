@@ -29,6 +29,7 @@ function getReportUrl(area: string) {
     governo: "governo.pdf",
     logistica: "logistica.pdf",
     empreendedor: "empreendedor.pdf",
+    direito: "direito.pdf",
     outra: "outra.pdf",
   };
   const key = (area || "outra").toLowerCase();
