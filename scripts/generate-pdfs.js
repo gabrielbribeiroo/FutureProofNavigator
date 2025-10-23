@@ -20,6 +20,7 @@ async function run() {
     { html: 'reports/governo.html', pdf: 'reports/governo.pdf' },
     { html: 'reports/logistica.html', pdf: 'reports/logistica.pdf' },
     { html: 'reports/empreendedor.html', pdf: 'reports/empreendedor.pdf' },
+    { html: 'reports/direito.html', pdf: 'reports/direito.pdf' },
   ];
 
   for (const item of items) {
@@ -32,6 +33,8 @@ async function run() {
     const fileUrl = 'file:///' + htmlPath.replace(/\\/g, '/');
     console.log(`[pdf] ${item.html} -> ${item.pdf}`);
     await page.goto(fileUrl, { waitUntil: 'networkidle0', timeout: 60000 });
+    // small settle to ensure fonts/styles
+    await page.waitForTimeout(200);
     await page.pdf({
       path: pdfPath,
       format: 'A4',
