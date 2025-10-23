@@ -25,7 +25,7 @@ document.getElementById("lead-form").addEventListener("submit", async function(e
         return;
     }
 
-    const area = document.getElementById("area-hidden").value;
+    const area = document.getElementById("area-hidden").value || "outra";
     const responses = document.getElementById("responses-hidden").value;
     const iaScore = document.getElementById("ia-score-hidden").value;
     const segmentScore = document.getElementById("segment-score-hidden").value;
@@ -49,7 +49,9 @@ document.getElementById("lead-form").addEventListener("submit", async function(e
         try {
             await supabaseClient.from('leads').insert({ name, email, area, responses, ia_score: iaScore, segment_score: segmentScore, segment_group: segmentGroup });
             await supabaseClient.from('events').insert({ type: 'submit_lead', page: 'index' });
-        } catch (e) {}
+        } catch (e) {
+            console.error('Erro ao salvar lead:', e);
+        }
     }
 
     formMessage.textContent = "Obrigado! Seu relatório será enviado em breve.";
@@ -69,10 +71,24 @@ document.getElementById("lead-form").addEventListener("submit", async function(e
 
     if (supabaseClient) {
         try {
-            await supabaseClient.functions.invoke('send-report', {
+            const { data, error } = await supabaseClient.functions.invoke('send-report', {
                 body: { name, email, area, responses, iaScore, segmentScore, segmentGroup }
             });
-        } catch (e) {}
+            if (error) {
+                console.error('send-report error:', error);
+                formMessage.textContent = "Recebemos seus dados, mas houve erro ao enviar o relatório. Tente novamente em alguns minutos.";
+                formMessage.style.color = "#e74c3c";
+                try { await supabaseClient.from('events').insert({ type: 'send_report_error', page: 'index', label: String(error.message || 'unknown') }); } catch (_) {}
+            } else {
+                console.log('send-report ok:', data);
+                try { await supabaseClient.from('events').insert({ type: 'send_report_ok', page: 'index' }); } catch (_) {}
+            }
+        } catch (e) {
+            console.error('send-report exception:', e);
+            formMessage.textContent = "Recebemos seus dados, mas houve erro ao enviar o relatório. Tente novamente em alguns minutos.";
+            formMessage.style.color = "#e74c3c";
+            try { await supabaseClient.from('events').insert({ type: 'send_report_exception', page: 'index' }); } catch (_) {}
+        }
     }
 });
 
