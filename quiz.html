@@ -29,15 +29,25 @@
             <p class="subtitle">Responda às perguntas para avaliar o impacto da IA na sua área.</p>
 
             <div class="quiz-container">
-                <div class="quiz-progress">
+                <div id="lead-gate" style="margin-bottom:16px;">
+                    <h3 style="margin-bottom:8px;">Antes de começar</h3>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <input id="lead-name" type="text" placeholder="Seu nome" aria-label="Seu nome" style="flex:1; min-width:220px; padding:10px;">
+                        <input id="lead-email" type="email" placeholder="Seu e-mail" aria-label="Seu e-mail" style="flex:1; min-width:260px; padding:10px;">
+                        <button class="btn-primary" onclick="startQuizFromLead()">Começar quiz</button>
+                    </div>
+                    <p id="lead-gate-msg" class="subtitle" style="margin-top:6px; color:#7f8c8d;">Informe nome e e‑mail para personalizarmos seu relatório ao final.</p>
+                </div>
+
+                <div class="quiz-progress" id="quiz-progress" style="display:none;">
                     <div class="progress-bar">
                         <div id="progress-fill" role="progressbar" aria-label="Progresso do quiz" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1" style="width: 0%"></div>
                     </div>
                     <span id="progress-text">Pergunta 1 de 8</span>
                 </div>
 
-                <div id="question-container" aria-live="polite"></div>
-                <div id="options-container" role="radiogroup" aria-labelledby="question-title"></div>
+                <div id="question-container" aria-live="polite" style="display:none;"></div>
+                <div id="options-container" role="radiogroup" aria-labelledby="question-title" style="display:none;"></div>
 
                 <div class="quiz-navigation">
                     <button id="prev-btn" class="btn-primary" onclick="prevQuestion()">Retornar</button>
@@ -48,7 +58,7 @@
                 <div id="results-container" style="display:none; margin-top:20px;">
                     <h3>Seu Score de Impacto da IA</h3>
                     <p id="score-text" class="subtitle" style="margin-top:8px; margin-bottom:16px;"></p>
-                    <a id="report-cta" class="btn-primary" href="#" style="display:inline-block; margin-right:10px;">Ver relatório de pesquisa na sua área (requer e-mail)</a>
+                    <button id="report-cta" class="btn-primary" onclick="sendReportOptIn()" style="display:inline-block; margin-right:10px;">Receber relatório por e‑mail</button>
                     <button class="btn-secondary" onclick="sharePage()">Compartilhar com um colega</button>
                 </div>
             </div>
@@ -71,6 +81,14 @@
     let currentQuestion = 0;
     let responses = {};
     let selectedArea = "";
+    // Lead gate
+    let leadName = "";
+    let leadEmail = "";
+    // Últimos resultados calculados
+    let lastIaScore = null;
+    let lastSegmentScore = null;
+    let lastSegmentGroup = null;
+    let lastCustomerSegment = null;
 
     const quizData = {
     tecnologia: [
@@ -154,6 +172,10 @@
 
         // --- ETAPA INICIAL: SELEÇÃO DE ÁREA ---
         if (!selectedArea) {
+            document.getElementById('lead-gate').style.display = 'block';
+            document.getElementById('quiz-progress').style.display = 'none';
+            questionContainer.style.display = 'block';
+            document.getElementById('options-container').style.display = 'block';
             questionContainer.innerHTML = "<h3>Selecione sua área de atuação</h3>";
 
             const areas = [
@@ -187,6 +209,10 @@
 
         // --- QUESTÕES DO QUIZ ---
         const currentQuiz = quizData[selectedArea][currentQuestion];
+        document.getElementById('lead-gate').style.display = 'none';
+        document.getElementById('quiz-progress').style.display = 'block';
+        questionContainer.style.display = 'block';
+        document.getElementById('options-container').style.display = 'block';
         document.getElementById("progress-text").textContent = `Pergunta ${currentQuestion + 1} de 8`;
         document.getElementById("progress-fill").style.width = `${((currentQuestion + 1) / 8) * 100}%`;
         document.getElementById("progress-fill").setAttribute('aria-valuenow', String(currentQuestion + 1));
@@ -300,6 +326,14 @@
             alert("Selecione uma opção antes de finalizar!");
             return;
         }
+        // validação do lead
+        if (!leadName || !leadEmail) {
+            const msg = document.getElementById('lead-gate-msg');
+            msg.style.color = '#e74c3c';
+            msg.textContent = 'Informe nome e e‑mail antes de concluir.';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
 
         let iaScore = 0;
         const fearImpact = { "Perda do emprego": 4, "Obsolecência de habilidades": 3, "Falta de tempo para aprendizado": 2, "Outro motivo": 1 };
@@ -320,13 +354,58 @@
         const segmentScore = (fearImpact[pain] || 1) + (budgetMap[budget] || 1) + (urgencyImpact[urgency] || 1) + (currentImpact[impactNow] || 1);
         const segmentGroup = segmentMapping(segmentScore);
 
-        const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}&segmentScore=${encodeURIComponent(segmentScore)}&segmentGroup=${encodeURIComponent(segmentGroup)}`;
+        // --- Classificação por Segmento de Cliente (A/B/C) ---
+        function includesAny(text, arr){
+            const t = (text || '').toLowerCase();
+            return arr.some(k => t.includes(k));
+        }
+
+        const fear = (responses.q1 || '').toLowerCase();
+        const skillLevel = (responses.q2 || responses.q3 || '').toLowerCase(); // depende da área
+        const invest = (responses.q3 || responses.q4 || '').toLowerCase();
+        const barrier = (responses.q7 || responses.q8 || '').toLowerCase();
+        const urgencyStr = (responses.q4 || '').toLowerCase();
+        const impactStr = (responses.q6 || '').toLowerCase();
+
+        let segA = 0, segB = 0, segC = 0;
+        // Segmento A: Explorador Ansioso
+        if (includesAny(fear, ["perda do emprego","automação","automacao","incerteza"])) segA += 2;
+        if (includesAny(urgencyStr, ["imediata","próximos 6","proximos 6"])) segA += 2;
+        if (includesAny(impactStr, ["alto","moderado"])) segA += 1;
+        if (includesAny(barrier, ["falta de tempo","complexidade"])) segA += 1;
+
+        // Segmento B: Especialista Estagnado
+        if (includesAny(fear, ["obsolecência","obsolescencia","desvalorização","desvalorizacao"])) segB += 2;
+        if (includesAny(invest, ["nada","até r$100","ate r$100"])) segB += 2;
+        if (includesAny(skillLevel, ["avançado","avancado","especialista"])) segB += 1;
+        if (includesAny(urgencyStr, ["12 meses","não urgente","nao urgente"])) segB += 1;
+
+        // Segmento C: Generalista Confuso
+        if (includesAny((responses.q0 || responses.q1 || '').toLowerCase(), ["não utilizo","nao utilizo","outra ferramenta"]) ) segC += 2;
+        if (includesAny(barrier, ["falta de motivação","falta de motivacao","complexidade"])) segC += 2;
+        if (includesAny(impactStr, ["baixo","nenhum"])) segC += 1;
+        if (includesAny(urgencyStr, ["não urgente","nao urgente"])) segC += 1;
+
+        let customerSegment = 'Explorador Ansioso';
+        let maxVal = segA; let segKey = 'A';
+        if (segB > maxVal) { maxVal = segB; segKey = 'B'; }
+        if (segC > maxVal) { maxVal = segC; segKey = 'C'; }
+        if (segKey === 'A') customerSegment = 'Explorador Ansioso';
+        if (segKey === 'B') customerSegment = 'Especialista Estagnado';
+        if (segKey === 'C') customerSegment = 'Generalista Confuso';
+
+        const queryString = `?area=${encodeURIComponent(selectedArea)}&responses=${encodeURIComponent(JSON.stringify(responses))}&iaScore=${encodeURIComponent(iaScore)}&segmentScore=${encodeURIComponent(segmentScore)}&segmentGroup=${encodeURIComponent(segmentGroup)}&customerSegment=${encodeURIComponent(customerSegment)}`;
+
+        // guarda últimos resultados para o opt-in de envio
+        lastIaScore = iaScore;
+        lastSegmentScore = segmentScore;
+        lastSegmentGroup = segmentGroup;
+        lastCustomerSegment = customerSegment;
 
         // Apresenta resultado na página e CTA para relatório (exige e-mail)
         const results = document.getElementById("results-container");
-        document.getElementById("score-text").textContent = `Seu Score de Impacto da IA é ${iaScore}/12. Segmento: ${segmentGroup} (score ${segmentScore}/16).`;
+        document.getElementById("score-text").textContent = `Seu Score de Impacto da IA é ${iaScore}/12. Prioridade: ${segmentGroup} (score ${segmentScore}/16). Perfil: ${customerSegment}.`;
         const cta = document.getElementById("report-cta");
-        cta.href = `https://gabrielbribeiroo.github.io/FutureProofNavigator/${queryString}#contact`;
         results.style.display = "block";
         results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -340,12 +419,63 @@
                         responses: responses,
                         ia_score: iaScore,
                         segment_score: segmentScore,
-                        segment_group: segmentGroup
+                        segment_group: segmentGroup,
+                        customer_segment: customerSegment
                     });
+                    // registra lead no início do quiz, se ainda não existir evento
+                    try {
+                        await supabaseClient.from('leads').insert({ name: leadName, email: leadEmail, area: selectedArea, ia_score: iaScore, segment_score: segmentScore, segment_group: segmentGroup, customer_segment: customerSegment });
+                    } catch(_) {}
                     await supabaseClient.from('events').insert({ type: 'submit_quiz', page: 'quiz' });
                 } catch (e) {}
             }
         })();
+    }
+
+    function startQuizFromLead(){
+        const nameEl = document.getElementById('lead-name');
+        const emailEl = document.getElementById('lead-email');
+        const msg = document.getElementById('lead-gate-msg');
+        const name = (nameEl.value || '').trim();
+        const email = (emailEl.value || '').trim();
+        if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            msg.style.color = '#e74c3c';
+            msg.textContent = 'Preencha nome e um e‑mail válido para começar.';
+            return;
+        }
+        leadName = name; leadEmail = email;
+        msg.style.color = '#2ecc71';
+        msg.textContent = 'Tudo certo! Vamos começar.';
+        // inicia seleção de área
+        selectedArea = ""; currentQuestion = 0; responses = {};
+        loadQuestion();
+        // foca na área
+        const qt = document.getElementById('question-title'); if (qt) qt.focus();
+    }
+
+    async function sendReportOptIn(){
+        const btn = document.getElementById('report-cta');
+        btn.disabled = true; btn.textContent = 'Enviando...';
+        try {
+            if (!supabaseClient){ throw new Error('Cliente Supabase não inicializado'); }
+            if (lastIaScore == null){ throw new Error('Finalize o quiz antes de solicitar o relatório'); }
+            await supabaseClient.functions.invoke('send-report', {
+                body: {
+                    name: leadName,
+                    email: leadEmail,
+                    area: selectedArea,
+                    responses,
+                    iaScore: lastIaScore,
+                    segmentScore: lastSegmentScore,
+                    segmentGroup: lastSegmentGroup,
+                    customerSegment: lastCustomerSegment
+                }
+            });
+            btn.textContent = 'Relatório solicitado! Verifique seu e‑mail';
+        } catch (e){
+            btn.disabled = false; btn.textContent = 'Receber relatório por e‑mail';
+            alert('Não foi possível enviar o relatório agora. Tente novamente em alguns minutos.');
+        }
     }
 
     // Compartilhamento básico
