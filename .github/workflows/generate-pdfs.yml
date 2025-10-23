@@ -1,0 +1,35 @@
+name: Generate PDFs
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "reports/*.html"
+      - "scripts/generate-pdfs.js"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  build-pdfs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install deps
+        run: npm ci
+      - name: Generate PDFs with Puppeteer
+        run: npm run build:pdfs
+      - name: Upload PDFs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-pdfs
+          path: reports/*.pdf
+      - name: Commit PDFs back to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/*.pdf || true
+          git commit -m "chore: update generated PDFs" || echo "No changes"
+          git push
