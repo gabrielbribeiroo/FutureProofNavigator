@@ -330,8 +330,7 @@
         results.style.display = "block";
         results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-        // Redireciona imediatamente para a seção de contato no site público
-        window.location.href = `https://gabrielbribeiroo.github.io/FutureProofNavigator/${queryString}#contact`;
+        // Não redireciona automaticamente; usuário verá o score e poderá clicar no CTA para ir ao formulário
 
         (async function() {
             if (supabaseClient) {
