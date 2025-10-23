@@ -326,15 +326,12 @@
         const results = document.getElementById("results-container");
         document.getElementById("score-text").textContent = `Seu Score de Impacto da IA é ${iaScore}/12. Segmento: ${segmentGroup} (score ${segmentScore}/16).`;
         const cta = document.getElementById("report-cta");
-        cta.href = `index.html#contact${queryString}`;
+        cta.href = `https://gabrielbribeiroo.github.io/FutureProofNavigator/#contact${queryString}`;
         results.style.display = "block";
         results.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-        // Redireciona para a seção de contato no site público após breve pausa
-        setTimeout(function(){
-            const contactUrl = `https://gabrielbribeiroo.github.io/FutureProofNavigator/#contact${queryString}`;
-            window.location.href = contactUrl;
-        }, 1200);
+        // Redireciona imediatamente para a seção de contato no site público
+        window.location.href = `https://gabrielbribeiroo.github.io/FutureProofNavigator/#contact${queryString}`;
 
         (async function() {
             if (supabaseClient) {
