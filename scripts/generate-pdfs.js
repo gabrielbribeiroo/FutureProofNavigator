@@ -5,7 +5,11 @@ const fs = require('fs');
 
 async function run() {
   const puppeteer = await import('puppeteer');
-  const browser = await puppeteer.launch({ headless: 'new' });
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath: puppeteer.executablePath?.()
+  });
   const page = await browser.newPage();
 
   const root = process.cwd();
