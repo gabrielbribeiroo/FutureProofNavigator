@@ -1,59 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Relatório de Pesquisa – Indústria</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <style>
-    body { font-family: Poppins, Arial, sans-serif; color:#2c3e50; }
-    .container { max-width: 860px; margin: 40px auto; padding: 0 20px; }
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    h2 { font-size: 20px; margin-top: 28px; }
-    .muted { color:#7f8c8d; }
-    .card { background:#fff; border:1px solid #ecf0f1; border-radius:12px; padding:18px; margin:16px 0; }
-    ul { margin: 8px 0 0 20px; }
-  </style>
+  <meta charset="utf-8">
+  <title>Relatório de Impacto da IA - Indústria</title>
+  <link rel="stylesheet" href="./report.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Relatório de Pesquisa – Indústria</h1>
-    <p class="muted">Panorama de impacto e adoção de IA em operações industriais.</p>
-
-    <div class="card">
-      <h2>Resumo Executivo</h2>
-      <p>Este relatório apresenta achados sobre adoção de IA, automação, manutenção preditiva e digitalização de processos na indústria, reunindo sinais de prioridade, barreiras e oportunidades.</p>
-    </div>
-
-    <div class="card">
-      <h2>Principais Sinais de Prioridade</h2>
-      <ul>
-        <li>Automação e robótica em linhas de produção</li>
-        <li>IoT/Sensores para monitoramento de ativos</li>
-        <li>ERP/MES integrados ao chão de fábrica</li>
-        <li>Projetos de manutenção preditiva</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>Barreiras Comuns</h2>
-      <ul>
-        <li>Custo de implementação e ROI</li>
-        <li>Falta de tempo e equipe para execução</li>
-        <li>Complexidade técnica e integração</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>Recomendações Iniciais</h2>
-      <ul>
-        <li>Começar por um piloto de manutenção preditiva com KPI claro</li>
-        <li>Mapear dados críticos (telemetria, ordens de serviço)</li>
-        <li>Treinar equipe em fundamentos de IA aplicada à operação</li>
-      </ul>
-    </div>
-
-    <p class="muted">FutureProof Navigator • Relatório setorial • Indústria</p>
+  <div class="header">
+    <h1>Relatório de Impacto da IA</h1>
+    <div class="subtitle">Setor: Indústria</div>
   </div>
+  <div class="container">
+    <div class="section">
+      <div class="card kpi"><span class="label">Risco de Automação</span><span class="value">Alto</span></div>
+      <div class="card kpi"><span class="label">Urgência de Digitalização</span><span class="value">6-12 meses</span></div>
+      <div class="card kpi"><span class="label">Orçamento recomendado (mês)</span><span class="value">R$ 150 - R$ 300</span></div>
+    </div>
+
+    <div class="section">
+      <h2>Principais Tendências</h2>
+      <div class="card">
+        <ul class="list">
+          <li>Automação/robótica no chão de fábrica.</li>
+          <li>IoT e telemetria para ativos críticos.</li>
+          <li>ERP/MES integrados e manutenção preditiva.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Recomendações</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="badge">Curto prazo</div>
+          <ul class="list">
+            <li>Piloto de manutenção preditiva com KPI.</li>
+            <li>Mapear dados de OS e telemetria.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="badge">Médio prazo</div>
+          <ul class="list">
+            <li>Integração ERP/MES e observabilidade.</li>
+            <li>Treinar equipe em IA aplicada à operação.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">FutureProof Navigator • Relatório setorial</div>
 </body>
 </html>

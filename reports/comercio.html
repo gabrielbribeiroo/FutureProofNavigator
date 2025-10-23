@@ -1,58 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Relatório de Pesquisa – Comércio</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <style>
-    body { font-family: Poppins, Arial, sans-serif; color:#2c3e50; }
-    .container { max-width: 860px; margin: 40px auto; padding: 0 20px; }
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    h2 { font-size: 20px; margin-top: 28px; }
-    .muted { color:#7f8c8d; }
-    .card { background:#fff; border:1px solid #ecf0f1; border-radius:12px; padding:18px; margin:16px 0; }
-    ul { margin: 8px 0 0 20px; }
-  </style>
+  <meta charset="utf-8">
+  <title>Relatório de Impacto da IA - Comércio</title>
+  <link rel="stylesheet" href="./report.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Relatório de Pesquisa – Comércio</h1>
-    <p class="muted">Panorama de IA em varejo e atacado: canais digitais, estoque e precificação.</p>
-
-    <div class="card">
-      <h2>Resumo Executivo</h2>
-      <p>Este relatório sumariza práticas e barreiras de IA no comércio: previsão de demanda, recomendação, promoções dinâmicas e logística.</p>
-    </div>
-
-    <div class="card">
-      <h2>Prioridades</h2>
-      <ul>
-        <li>Integração de e-commerce e loja física</li>
-        <li>Recomendação e personalização</li>
-        <li>Previsão de demanda e reposição</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>Barreiras</h2>
-      <ul>
-        <li>Margens apertadas para investir</li>
-        <li>Dados fragmentados entre canais</li>
-        <li>Complexidade de promoções</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>Primeiros Passos</h2>
-      <ul>
-        <li>Piloto de recomendação em catálogo com volume</li>
-        <li>Organizar dados de estoque e vendas</li>
-        <li>Testar reprecificação em pequena categoria</li>
-      </ul>
-    </div>
-
-    <p class="muted">FutureProof Navigator • Relatório setorial • Comércio</p>
+  <div class="header">
+    <h1>Relatório de Impacto da IA</h1>
+    <div class="subtitle">Setor: Comércio</div>
   </div>
+  <div class="container">
+    <div class="section">
+      <div class="card kpi"><span class="label">Risco de Automação</span><span class="value">Moderado</span></div>
+      <div class="card kpi"><span class="label">Urgência Digital</span><span class="value">6-12 meses</span></div>
+      <div class="card kpi"><span class="label">Orçamento recomendado (mês)</span><span class="value">R$ 100 - R$ 250</span></div>
+    </div>
+
+    <div class="section">
+      <h2>Principais Tendências</h2>
+      <div class="card">
+        <ul class="list">
+          <li>Integração e-commerce e loja física.</li>
+          <li>Recomendação e personalização.</li>
+          <li>Previsão de demanda e reposição.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Recomendações</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="badge">Curto prazo</div>
+          <ul class="list">
+            <li>Piloto de recomendação em catálogo.</li>
+            <li>Mapear dados de vendas/estoque.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="badge">Médio prazo</div>
+          <ul class="list">
+            <li>Testar reprecificação em categoria piloto.</li>
+            <li>Logística/fulfillment orientados a dados.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">FutureProof Navigator • Relatório setorial</div>
 </body>
 </html>
