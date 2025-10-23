@@ -14,6 +14,8 @@ async function run() {
     { html: 'reports/servicos.html', pdf: 'reports/servicos.pdf' },
     { html: 'reports/comercio.html', pdf: 'reports/comercio.pdf' },
     { html: 'reports/governo.html', pdf: 'reports/governo.pdf' },
+    { html: 'reports/logistica.html', pdf: 'reports/logistica.pdf' },
+    { html: 'reports/empreendedor.html', pdf: 'reports/empreendedor.pdf' },
   ];
 
   for (const item of items) {

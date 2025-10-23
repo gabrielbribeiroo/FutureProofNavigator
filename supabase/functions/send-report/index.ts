@@ -23,6 +23,12 @@ function getReportUrl(area: string) {
     construcao: "construcao.pdf",
     saude: "saude.pdf",
     educacao: "educacao.pdf",
+    industria: "industria.pdf",
+    servicos: "servicos.pdf",
+    comercio: "comercio.pdf",
+    governo: "governo.pdf",
+    logistica: "logistica.pdf",
+    empreendedor: "empreendedor.pdf",
     outra: "outra.pdf",
   };
   const key = (area || "outra").toLowerCase();
@@ -59,7 +65,11 @@ async function sendEmailWithPdf(to: string, subject: string, html: string, pdfBy
   form.append("to", to);
   form.append("subject", subject);
   form.append("html", html);
-  form.append("attachments", new File([pdfBytes], "relatorio-impacto-ia.pdf", { type: "application/pdf" }));
+  // Converte para ArrayBuffer puro (copia) para evitar SharedArrayBuffer nos tipos
+  const ab = new ArrayBuffer(pdfBytes.byteLength);
+  new Uint8Array(ab).set(pdfBytes);
+  const pdfBlob = new Blob([ab], { type: "application/pdf" });
+  form.append("attachments", new File([pdfBlob], "relatorio-impacto-ia.pdf", { type: "application/pdf" }));
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -92,6 +102,7 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ ok: true }), { headers: { "Content-Type": "application/json" } });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message || String(e) }), { status: 500, headers: { "Content-Type": "application/json" } });
+    const message = e instanceof Error ? e.message : String(e);
+    return new Response(JSON.stringify({ error: message }), { status: 500, headers: { "Content-Type": "application/json" } });
   }
 });

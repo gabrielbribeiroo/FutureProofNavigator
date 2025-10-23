@@ -9,16 +9,21 @@ on:
       - "package.json"
       - "package-lock.json"
 
+permissions:
+  contents: write  # necessário para dar git push com GITHUB_TOKEN
+
 jobs:
   build-pdfs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # garante histórico para push sem conflitos
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - name: Install deps
-        run: npm ci
+        run: npm install
       - name: Generate PDFs with Puppeteer
         run: npm run build:pdfs
       - name: Upload PDFs as artifact
@@ -31,5 +36,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add reports/*.pdf || true
-          git commit -m "chore: update generated PDFs" || echo "No changes"
+          git diff --cached --quiet && echo "No changes" || git commit -m "chore: update generated PDFs"
+          git pull --rebase
           git push
