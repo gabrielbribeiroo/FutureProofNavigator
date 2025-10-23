@@ -8,6 +8,9 @@ declare const Deno: {
 // Environment variables configured in Supabase Dashboard > Project Settings > Functions > send-report
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 const FROM_EMAIL = Deno.env.get("FROM_EMAIL") || "gabrielbroliveira@gmail.com";
+// Optional: Google Apps Script Web App to send via Gmail
+const GMAIL_WEBAPP_URL = Deno.env.get("GMAIL_WEBAPP_URL") || "";
+const GMAIL_WEBAPP_TOKEN = Deno.env.get("GMAIL_WEBAPP_TOKEN") || "";
 
 // Public base URL where PDFs are hosted (GitHub Pages)
 const BASE_REPORT_URL = "https://gabrielbribeiroo.github.io/FutureProofNavigator/reports/";
@@ -35,6 +38,21 @@ async function downloadPdf(url: string): Promise<Uint8Array> {
 }
 
 async function sendEmailWithPdf(to: string, subject: string, html: string, pdfBytes: Uint8Array) {
+  // If a Gmail Apps Script Web App is configured, use it to send from Gmail
+  if (GMAIL_WEBAPP_URL) {
+    const res = await fetch(GMAIL_WEBAPP_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(GMAIL_WEBAPP_TOKEN ? { "X-Auth-Token": GMAIL_WEBAPP_TOKEN } : {}),
+      },
+      body: JSON.stringify({ to, subject, html, attachmentBase64: btoa(String.fromCharCode(...pdfBytes)), attachmentName: "relatorio-impacto-ia.pdf" })
+    });
+    if (!res.ok) throw new Error(`Gmail webapp failed: ${res.status} ${await res.text()}`);
+    return;
+  }
+
+  // Fallback: Resend
   if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY não configurada");
   const form = new FormData();
   form.append("from", FROM_EMAIL);
