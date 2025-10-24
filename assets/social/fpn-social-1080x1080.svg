@@ -1,0 +1,40 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1080" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FFFB"/>
+      <stop offset="1" stop-color="#EAFBF4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#1ABC9C"/>
+      <stop offset="1" stop-color="#16A085"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="12" stdDeviation="24" flood-color="#1abc9c" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- Minimal abstract accents -->
+  <circle cx="900" cy="220" r="140" fill="#1ABC9C" opacity="0.08"/>
+  <circle cx="180" cy="860" r="110" fill="#1ABC9C" opacity="0.08"/>
+
+  <!-- Title block -->
+  <g transform="translate(140,300)">
+    <rect x="0" y="-10" width="10" height="70" rx="5" fill="url(#accent)"/>
+    <text x="28" y="40" font-family="Poppins, Arial, sans-serif" font-size="60" font-weight="700" fill="#2C3E50">FutureProof Navigator</text>
+  </g>
+
+  <!-- Short message -->
+  <text x="140" y="420" font-family="Poppins, Arial, sans-serif" font-size="34" fill="#2C3E50" opacity="0.9">Prepare-se para o impacto da IA</text>
+  <text x="140" y="470" font-family="Poppins, Arial, sans-serif" font-size="28" fill="#2C3E50" opacity="0.7">Descubra seu nível e receba um relatório gratuito</text>
+
+  <!-- Clean badge CTA (no link) -->
+  <g transform="translate(140,560)" filter="url(#soft)">
+    <rect x="0" y="0" width="520" height="96" rx="16" fill="#FFFFFF"/>
+    <rect x="12" y="12" width="16" height="72" rx="8" fill="url(#accent)"/>
+    <text x="48" y="62" font-family="Poppins, Arial, sans-serif" font-size="30" font-weight="700" fill="#2C3E50">Descubra seu impacto</text>
+  </g>
+
+  <!-- Footer hint (link será inserido na postagem) -->
+  <text x="140" y="760" font-family="Poppins, Arial, sans-serif" font-size="22" fill="#7F8C8D">Link na postagem</text>
+</svg>

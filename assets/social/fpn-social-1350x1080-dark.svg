@@ -1,0 +1,41 @@
+<svg width="1350" height="1080" viewBox="0 0 1350 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1350" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0D1418"/>
+      <stop offset="1" stop-color="#0A1013"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#1ABC9C"/>
+      <stop offset="1" stop-color="#16A085"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="14" stdDeviation="22" flood-color="#1abc9c" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="1350" height="1080" fill="url(#bg)"/>
+
+  <!-- Subtle dots -->
+  <g opacity="0.18">
+    <defs>
+      <pattern id="dots" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="1" fill="#1ABC9C"/>
+      </pattern>
+    </defs>
+    <rect x="1040" y="140" width="260" height="260" fill="url(#dots)"/>
+    <rect x="120" y="820" width="260" height="260" fill="url(#dots)"/>
+  </g>
+
+  <!-- Ultra clean title -->
+  <g transform="translate(160,420)">
+    <rect x="0" y="-16" width="14" height="114" rx="7" fill="url(#accent)"/>
+    <text x="36" y="60" font-family="Poppins, Arial, sans-serif" font-size="96" font-weight="700" fill="#EAFBF4">FutureProof</text>
+    <text x="36" y="150" font-family="Poppins, Arial, sans-serif" font-size="96" font-weight="700" fill="#EAFBF4">Navigator</text>
+  </g>
+
+  <!-- Badge CTA (no link) -->
+  <g transform="translate(160,640)" filter="url(#soft)">
+    <rect x="0" y="0" width="680" height="130" rx="20" fill="#0F161A" stroke="#153D35"/>
+    <rect x="18" y="18" width="20" height="94" rx="10" fill="url(#accent)"/>
+    <text x="58" y="92" font-family="Poppins, Arial, sans-serif" font-size="44" font-weight="700" fill="#EAFBF4">Descubra seu impacto</text>
+  </g>
+</svg>

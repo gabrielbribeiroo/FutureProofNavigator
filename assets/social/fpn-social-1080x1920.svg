@@ -1,0 +1,41 @@
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1080" y2="1920" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FFFB"/>
+      <stop offset="1" stop-color="#EAFBF4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#1ABC9C"/>
+      <stop offset="1" stop-color="#16A085"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#1abc9c" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+
+  <!-- Abstract accents -->
+  <circle cx="900" cy="360" r="160" fill="#1ABC9C" opacity="0.08"/>
+  <circle cx="200" cy="1680" r="140" fill="#1ABC9C" opacity="0.08"/>
+
+  <!-- Title -->
+  <g transform="translate(120,420)">
+    <rect x="0" y="-14" width="12" height="100" rx="6" fill="url(#accent)"/>
+    <text x="30" y="48" font-family="Poppins, Arial, sans-serif" font-size="72" font-weight="700" fill="#2C3E50">FutureProof</text>
+    <text x="30" y="118" font-family="Poppins, Arial, sans-serif" font-size="72" font-weight="700" fill="#2C3E50">Navigator</text>
+  </g>
+
+  <!-- Short message -->
+  <text x="120" y="620" font-family="Poppins, Arial, sans-serif" font-size="40" fill="#2C3E50" opacity="0.9">Prepare-se para o impacto da IA</text>
+  <text x="120" y="680" font-family="Poppins, Arial, sans-serif" font-size="32" fill="#2C3E50" opacity="0.7">Descubra seu nível e receba um relatório gratuito</text>
+
+  <!-- Clean CTA badge (no link) -->
+  <g transform="translate(120,820)" filter="url(#soft)">
+    <rect x="0" y="0" width="700" height="120" rx="20" fill="#FFFFFF"/>
+    <rect x="16" y="16" width="18" height="88" rx="9" fill="url(#accent)"/>
+    <text x="54" y="78" font-family="Poppins, Arial, sans-serif" font-size="40" font-weight="700" fill="#2C3E50">Descubra seu impacto</text>
+  </g>
+
+  <!-- Footer hint -->
+  <text x="120" y="1760" font-family="Poppins, Arial, sans-serif" font-size="28" fill="#7F8C8D">Link na postagem</text>
+</svg>

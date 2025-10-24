@@ -1,0 +1,40 @@
+<svg width="1350" height="1080" viewBox="0 0 1350 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1350" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FFFB"/>
+      <stop offset="1" stop-color="#EAFBF4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#1ABC9C"/>
+      <stop offset="1" stop-color="#16A085"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="12" stdDeviation="24" flood-color="#1abc9c" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <rect width="1350" height="1080" fill="url(#bg)"/>
+
+  <!-- Abstract accents -->
+  <circle cx="1120" cy="220" r="150" fill="#1ABC9C" opacity="0.08"/>
+  <circle cx="220" cy="920" r="120" fill="#1ABC9C" opacity="0.08"/>
+
+  <!-- Title -->
+  <g transform="translate(160,300)">
+    <rect x="0" y="-12" width="12" height="86" rx="6" fill="url(#accent)"/>
+    <text x="34" y="44" font-family="Poppins, Arial, sans-serif" font-size="68" font-weight="700" fill="#2C3E50">FutureProof Navigator</text>
+  </g>
+
+  <!-- Short message -->
+  <text x="160" y="430" font-family="Poppins, Arial, sans-serif" font-size="36" fill="#2C3E50" opacity="0.9">Prepare-se para o impacto da IA</text>
+  <text x="160" y="484" font-family="Poppins, Arial, sans-serif" font-size="30" fill="#2C3E50" opacity="0.7">Descubra seu nível e receba um relatório gratuito</text>
+
+  <!-- Clean CTA badge (no link) -->
+  <g transform="translate(160,570)" filter="url(#soft)">
+    <rect x="0" y="0" width="600" height="110" rx="18" fill="#FFFFFF"/>
+    <rect x="16" y="16" width="18" height="78" rx="9" fill="url(#accent)"/>
+    <text x="56" y="74" font-family="Poppins, Arial, sans-serif" font-size="36" font-weight="700" fill="#2C3E50">Descubra seu impacto</text>
+  </g>
+
+  <!-- Footer hint -->
+  <text x="160" y="800" font-family="Poppins, Arial, sans-serif" font-size="24" fill="#7F8C8D">Link na postagem</text>
+</svg>
