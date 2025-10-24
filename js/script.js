@@ -5,7 +5,7 @@ const supabaseClient = (typeof window !== 'undefined' && window.supabase && wind
 
 async function openQuizForm() {
     if (supabaseClient) {
-        try { await supabaseClient.from('events').insert({ type: 'open_quiz', page: 'index' }); } catch (e) {}
+        try { await supabaseClient.from('events').insert({ type: 'form_click', page: 'index' }); } catch (e) {}
     }
     window.open("https://forms.gle/qm11Gqm6R2dvyva18", "_blank");
 }
@@ -110,14 +110,43 @@ function sharePage() {
 }
 
 // Processar parâmetros de consulta do quiz
-window.onload = function() {
+window.onload = async function() {
     const urlParams = new URLSearchParams(window.location.search);
     document.getElementById("area-hidden").value = urlParams.get("area") || "";
     document.getElementById("responses-hidden").value = urlParams.get("responses") || "";
     document.getElementById("ia-score-hidden").value = urlParams.get("iaScore") || "";
     document.getElementById("segment-score-hidden").value = urlParams.get("segmentScore") || "";
     document.getElementById("segment-group-hidden").value = urlParams.get("segmentGroup") || "";
+
+    // Track page view and update counters
+    if (supabaseClient) {
+        try { await supabaseClient.from('events').insert({ type: 'page_view', page: 'index' }); } catch (_) {}
+        try { await updateStats(); } catch (_) {}
+    }
 };
+
+async function updateStats() {
+    const visitEl = document.getElementById('visit-count');
+    const clickEl = document.getElementById('form-click-count');
+    if (!visitEl || !clickEl || !supabaseClient) return;
+
+    // Count page views
+    const { count: visits } = await supabaseClient
+        .from('events')
+        .select('*', { count: 'exact', head: true })
+        .eq('type', 'page_view')
+        .eq('page', 'index');
+
+    // Count form clicks
+    const { count: formClicks } = await supabaseClient
+        .from('events')
+        .select('*', { count: 'exact', head: true })
+        .eq('type', 'form_click')
+        .eq('page', 'index');
+
+    visitEl.textContent = typeof visits === 'number' ? String(visits) : '0';
+    clickEl.textContent = typeof formClicks === 'number' ? String(formClicks) : '0';
+}
 
 async function trackHeroStart() {
     if (supabaseClient) { try { await supabaseClient.from('events').insert({ type: 'cta_click', page: 'index', label: 'hero_start' }); } catch (e) {} }
