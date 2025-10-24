@@ -7,7 +7,7 @@ async function openQuizForm() {
     if (supabaseClient) {
         try { await supabaseClient.from('events').insert({ type: 'open_quiz', page: 'index' }); } catch (e) {}
     }
-    window.open("quiz.html", "_blank");
+    window.open("https://forms.gle/qm11Gqm6R2dvyva18", "_blank");
 }
 
 // Form Submission Logic
